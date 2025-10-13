@@ -1,54 +1,74 @@
-import { useState } from "react";
+// src/pages/Products.tsx
+import { useState, useEffect } from 'react';
+import { productAPI } from '../api';
+import type { Product} from '../Types/product';
 
-const Products = () => {
-  const [activeTab, setActiveTab] = useState("fruits");
+function Products() {
+  //const [activeTab, setActiveTab] = useState('fruits');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [activeTab, setActiveTab] = useState('Fruits');
 
-  const products = {
-    fruits: ["Pommes", "Poires", "Bananes"],
-    legumes: ["Carottes", "Tomates", "Courgettes"],
-    dairy: ["Lait", "Fromage", "Yaourt"],
-  };
 
+  useEffect(() => {
+    productAPI.getAll().then((data) => {
+      console.log("Produits chargés:", data);
+      setProducts(data);
+    });
+  }, []);
+
+  // 👇 FILTRER QUAND products OU activeTab CHANGE
+  useEffect(() => {
+    if (products.length === 0) return; // 👈 IMPORTANT : Attendre que les produits soient chargés
+
+    console.log("Filtrage avec:", activeTab);
+    console.log("Produits disponibles:", products);
+    
+    const filtered = products.filter((p) => {
+      console.log(`Produit: ${p.name}, Catégorie: ${p.category?.name}`);
+      return p.category?.name === activeTab;
+    });
+    
+    console.log("Résultat filtré:", filtered);
+    setFilteredProducts(filtered);
+  }, [products, activeTab]);
   return (
-    <section>
-      {/*Tabs*/}
-      <div className="flex gap-4 border-b mb-6">
-        <button
-          onClick={() => setActiveTab("fruits")}
-          className={
-            activeTab === "fruits"
-              ? "border-b-2 border-green-500 font-bold"
-              : ""
-          }
+    <div>
+      {/* TABS */}
+      <div className="tabs">
+        <button 
+          onClick={() => setActiveTab('Fruits')}
+          className={activeTab === 'fruits' ? 'active' : ''}
         >
           Fruits
         </button>
-        <button
-          onClick={() => setActiveTab("legumes")}
-          className={
-            activeTab === "legumes"
-              ? "border-b-2 border-green-500 font-bold"
-              : ""
-          }
+        <button 
+          onClick={() => setActiveTab('Légumes')}
+          className={activeTab === 'légumes' ? 'active' : ''}
         >
           Légumes
         </button>
-        <button
-          onClick={() => setActiveTab("dairy")}
-          className={
-            activeTab === "dairy" ? "border-b-2 border-green-500 font-bold" : ""
-          }
+        <button 
+          onClick={() => setActiveTab('Produits laitiers')}
+          className={activeTab === 'produits laitiers' ? 'active' : ''}
         >
-          Produis Laitiers
+          Produits laitiers
         </button>
       </div>
 
-      {/*Contenu dynamique*/}
-      {activeTab === "fruits" && <p>Liste de fruits</p>}
-      {activeTab === "legumes" && <p>Liste de légumes</p>}
-      {activeTab === "dairy" && <p>Liste des produits laitiers</p>}
-    </section>
+      {/* LISTE DES PRODUITS */}
+      <div className="product-grid">
+        {filteredProducts.map(product => (
+          <div key={product.id} className="product-card">
+            <img src={product.imageProduct} alt={product.name} />
+            <h3>{product.name}</h3>
+            <p>{product.price}€/{product.unit.id}-{product.unit?.name??"Non définie"}</p>
+            <button>Ajouter au panier</button>
+          </div>
+        ))}
+      </div>
+    </div>
   );
-};
+}
 
 export default Products;
