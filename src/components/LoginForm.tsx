@@ -1,10 +1,12 @@
 // src/components/Login.jsx
 import { useContext, useState } from 'react';
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 
 function Login() {
   const { login } = useContext(AuthContext);
+  const  navigate  = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -14,6 +16,8 @@ function Login() {
     try {
       const response = await api.post("/login_check", { email, password});
       login (response.data.token) // Redirection après connexion
+
+      navigate("/products");
     } catch (err) {
       setError('Email ou mot de passe incorrect');
     }
@@ -42,3 +46,5 @@ function Login() {
 }
 
 export default Login;
+
+

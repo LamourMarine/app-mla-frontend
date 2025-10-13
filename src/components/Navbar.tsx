@@ -1,13 +1,22 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from 'react-router-dom';
+import { authAPI } from '../api';
+
 
 interface NavbarProps {
   logo: string;
 }
 
 const Navbar = ({ logo }: NavbarProps) => {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate(); 
+  const logout = () => {
+    authAPI.logout();  // Nettoie le localStorage
+    navigate("/");    
+  };
+
   return (
     <nav className="fixed top-0 left-0 w-full bg-zinc-800 text-white flex items-center justify-between p-4">
       <img src={logo} alt="Cantine Verte" className="h-12" />
