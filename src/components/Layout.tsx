@@ -14,13 +14,13 @@ export default function Layout({ children, logo }: LayoutProps) {
         className="flex flex-col md:flex-row justify-between items-center px-4 py-3"
         />
         
-      </header>
+        </header>
 
-      <main className="flex-1 mt-20"> 
-        {children}
-      </main>
+        <main className="flex-1 mt-20 px-4"> 
+            {children}
+        </main>
 
-      <footer className="mt-auto">
+      <footer>
         <Footer />
       </footer>
     </div>

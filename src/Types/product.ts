@@ -17,7 +17,6 @@ export interface Product {
   };
   seller: {
     id: number;
-    firstName: string;
-    lastName: string;
+    name: string;
   };
 }
