@@ -1,9 +1,12 @@
 // src/api.tsx
 import axios from 'axios';
 import type { AxiosInstance } from 'axios';
+import type { Product } from './Types/product';
+
 
 // URL de base de l'API
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+export const ASSETS_BASE_URL = 'http://localhost';
 
 // Créer l'instance Axios
 const api: AxiosInstance = axios.create({
@@ -59,13 +62,6 @@ interface User {
   firstName: string;
   lastName: string;
   roles: string[];
-}
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  // ... autres champs
 }
 
 interface OrderItem {
