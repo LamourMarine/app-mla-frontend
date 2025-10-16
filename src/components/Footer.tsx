@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="bg-zinc-800 text-white py-8 text-center">
+    <footer >
       © 2025 Cantine Verte
     </footer>
   );

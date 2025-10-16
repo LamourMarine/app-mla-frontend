@@ -20,7 +20,7 @@ export default function Layout({ children, logo }: LayoutProps) {
             {children}
         </main>
 
-      <footer>
+      <footer className="bg-gradient-to-r from-green-600 via-emerald-500 to-green-600 shadow-lg w-full text-center text-white py-8">
         <Footer />
       </footer>
     </div>

@@ -59,7 +59,8 @@ const Navbar = ({ logo }: NavbarProps) => {
             </div>
         ) : (
           <li>
-            <Link to="/login">Connexion</Link>
+            <Link to="/login" className="btn-login">
+            Connexion</Link>
           </li>
         )}
         </div>
