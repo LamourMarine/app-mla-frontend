@@ -1,3 +1,4 @@
+// src/components/ProductCard.tsx
 import type { Product } from '../Types/product';
 import { ASSETS_BASE_URL } from "../api";
 
@@ -5,7 +6,6 @@ interface ProductCardProps {
   product: Product;
 }
 
-// src/components/ProductCard.tsx
 function ProductCard({ product }: ProductCardProps) {
   const imagePath = product.imageProduct || (product as any).image_Product || '/images/default.jpg';
   const imageUrl = imagePath.startsWith('/')

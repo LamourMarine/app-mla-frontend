@@ -135,6 +135,18 @@ export const authAPI = {
   },
 };
 
+export const producerAPI = {
+  getAll: async () => {
+    const response = await api.get('/producers');
+    return response.data;
+  },
+  
+  getProducts: async (producerId: number) => {
+    const response = await api.get(`/products?seller=${producerId}`);
+    return response.data;
+  }
+};
+
 // ==================== PRODUITS ====================
 
 export const productAPI = {
@@ -219,5 +231,4 @@ const decodeToken = (token: string): any => {
   }
 };
 
-// Exporter l'instance axios pour des cas particuliers
 export default api;
