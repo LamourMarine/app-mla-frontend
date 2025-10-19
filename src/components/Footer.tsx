@@ -1,8 +1,9 @@
+// src/components/Footer.tsx
 const Footer = () => {
   return (
-    <footer >
-      © 2025 Cantine Verte
-    </footer>
+    <div className="w-full">
+      <p>© 2025 Cantine Verte</p>
+    </div>
   );
 };
 

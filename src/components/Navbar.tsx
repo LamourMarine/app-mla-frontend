@@ -58,11 +58,19 @@ const Navbar = ({ logo }: NavbarProps) => {
           </li>
             </div>
         ) : (
-          <li>
-            <Link to="/login" className="btn-login">
-            Connexion</Link>
-          </li>
-        )}
+          <div className="flex items-center space-x-4">
+    <li>
+      <Link to="/login" className="btn-login">
+        Connexion
+      </Link>
+    </li>
+    <li>
+      <Link to="/register" className="btn-register">
+        Créer un compte
+      </Link>
+    </li>
+  </div>
+)}
         </div>
       </ul>
       {/* Menu mobile (burger) */}
