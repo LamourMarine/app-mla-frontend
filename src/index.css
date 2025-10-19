@@ -6,7 +6,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(14, 13, 13, 0.87);
   background-color: #242424;
 
   font-synthesis: none;
@@ -39,6 +39,22 @@ a.btn-login {
 
 a.btn-login:hover {
   background-color:#fcd34d;; /* amber-600 */
+}
+
+a.btn-register {
+    background-color: #ffffff;
+; /* amber-500 */
+  color:#16a34a;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.2em;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+a.btn-register:hover {
+    background-color:#fcd34d;; /* amber-600 */
 }
 
 body {

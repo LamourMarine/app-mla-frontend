@@ -6,6 +6,7 @@ import Logo from './assets/logo.png';
 import LoginPage from './pages/LoginPage';
 import Products from './pages/Products';
 import Producers from './pages/Producers';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} /> 
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/products" element={<Products />} />
         <Route path="/producers" element={<Producers/>} />
       </Routes>

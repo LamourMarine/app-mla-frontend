@@ -49,10 +49,11 @@ interface LoginCredentials {
 }
 
 interface RegisterData {
+  name:string;
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
+  address: string;
+  phone_number: string;
   userType: 'producteur' | 'structure';
 }
 
