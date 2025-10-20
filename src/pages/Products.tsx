@@ -35,7 +35,7 @@ function Products() {
   return (
     <div className="products-page flex flex-col items-center w-full px-4 py-8">
       {/* TABS */}
-      <div className="tabs flex gap-4 mb-8 flex-wrap justify-center">
+      <div className="tabs flex gap-4 mb-8 mt-8 flex-wrap justify-center">
         <button
           onClick={() => setActiveTab('Fruits')}
           className={`px-6 py-2 rounded-lg transition-all font-semibold ${

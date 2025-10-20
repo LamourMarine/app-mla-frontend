@@ -20,6 +20,10 @@ function ProducerCard({ producer }: ProducerCardProps) {
         className="w-full h-48 object-cover rounded-md mb-3"
       />
 
+        <h2 className="text-2xl font-bold mb-4 text-green-600">
+          {producer.name}
+        </h2>
+
       <p className="description text-gray-600 text-sm mb-3 line-clamp-2">
         {producer.address}
       </p>

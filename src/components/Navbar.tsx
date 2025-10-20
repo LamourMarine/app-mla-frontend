@@ -11,7 +11,7 @@ interface NavbarProps {
 const Navbar = ({ logo }: NavbarProps) => {
   const { isAuthenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  
+
   const handleLogout = () => {
     logout(); // Nettoie le localStorage
     navigate("/");
@@ -20,7 +20,7 @@ const Navbar = ({ logo }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-    useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 500);
     };
@@ -28,61 +28,95 @@ const Navbar = ({ logo }: NavbarProps) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-
   return (
-    <nav className="bg-gradient-to-r from-green-600 via-emerald-500 to-green-600 shadow-lg sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-      <img src={logo} alt="Cantine Verte" className="w-[100px] h-[100px] mt-[4vh]" />
-      </div>
-      <ul className="hidden md:flex space-x-8">
-        <li>
-          <Link to="/" className="text-white hover:text-amber-200 font-semibold transition-colors">Accueil</Link>
-        </li>
-        <li>
-          <Link to="/products" className="text-white hover:text-amber-200 font-semibold transition-colors">Produits</Link>
-        </li>
-        <li>
-          <Link to="/producers" className="text-white hover:text-amber-200 font-semibold transition-colors">Producteurs</Link>
-        </li>
-        <li>
-          <Link to="/contact"className="text-white hover:text-amber-200 font-semibold transition-colors">Contact</Link>
-        </li>
-        <div className="ml-auto">
-        {isAuthenticated ? (
-            <div className="flex items-center space-x-4">
-          <li>
-            <button onClick={handleLogout} className="bg-white text-green-600 px-4 py-2 rounded-lg font-semibold hover:bg-amber-100 transition-all shadow-md">
-              Se déconnecter
-            </button>
-          </li>
-            </div>
-        ) : (
-          <div className="flex items-center space-x-4">
-    <li>
-      <Link to="/login" className="btn-login">
-        Connexion
-      </Link>
-    </li>
-    <li>
-      <Link to="/register" className="btn-register">
-        Créer un compte
-      </Link>
-    </li>
-  </div>
-)}
+    <nav className="bg-[#002A22] sticky top-0 z-50">
+      <div className="max-w-9/10 mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <img
+            src={logo}
+            alt="Cantine Verte"
+            className="w-[50px] h-[40px] mt-[1.5vh]"
+            />
+            <p className="text-[#3ab54a] font-bold text-lg md:text-2xl md:text-2xl text-nav-text italic mb-2 md:mb-0 md:ml-6 md:mr-auto md:mt-4 text-center md:text-left">
+              Cantine Verte</p>
         </div>
-      </ul>
-      {/* Menu mobile (burger) */}
+        <ul className="hidden md:flex flex-row items-center space-x-8 ml-auto pb-2">
+          <li>
+            <Link
+              to="/"
+              className="text-white hover:text-amber-200 font-semibold transition-colors"
+            >
+              Accueil
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/products"
+              className="text-white hover:text-amber-200 font-semibold transition-colors"
+            >
+              Produits
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/producers"
+              className="text-white hover:text-amber-200 font-semibold transition-colors"
+            >
+              Producteurs
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/contact"
+              className="text-white hover:text-amber-200 font-semibold transition-colors"
+            >
+              Contact
+            </Link>
+          </li>
+          <div className="hidden md:flex flex-row items-center space-x-8 ml-auto">
+          {isAuthenticated ? (
+            <>
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="btn cursor-pointer bg-white text-[#002A22] px-4 py-2 rounded-lg font-semibold hover:bg-amber-100 transition-all shadow-md"
+                >
+                  Se déconnecter
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link
+                  to="/login"
+                  className="btn bg-white text-[#002A22] px-4 py-2 rounded-lg font-semibold hover:bg-amber-100 transition-all shadow-md"
+                >
+                  Connexion
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/register"
+                  className="btn bg-white text-[#002A22] px-4 py-2 rounded-lg font-semibold hover:bg-amber-100 transition-all shadow-md"
+                >
+                  Créer un compte
+                </Link>
+              </li>
+            </>
+          )}
+          </div>
+        </ul>
+        {/* Menu mobile (burger) */}
 
-      <div className="md:hidden">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-white focus:outline-none"
-        >
-          {isOpen ? "✕" : "☰"}
-        </button>
-      </div>
+        <div className="md:hidden">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-white focus:outline-none"
+          >
+            {isOpen ? "✕" : "☰"}
+          </button>
+        </div>
       </div>
 
       {/* Menu mobile déroulant */}
@@ -104,7 +138,7 @@ const Navbar = ({ logo }: NavbarProps) => {
           </li>
           <li>
             <Link to="/producers" onClick={() => setIsOpen(false)}>
-            Producteur
+              Producteur
             </Link>
           </li>
           <li>
@@ -112,18 +146,19 @@ const Navbar = ({ logo }: NavbarProps) => {
               Contact
             </Link>
           </li>{" "}
-                  {isAuthenticated ? (
-          <li>
-            <button onClick={handleLogout} className="text-white">
-              Se déconnecter
-            </button>
-          </li>
-        ) : (
-          <li>
-            <Link to="/login" onClick={() => setIsOpen(false)}>Connexion</Link>
-          </li>
-        )}
-
+          {isAuthenticated ? (
+            <li>
+              <button onClick={handleLogout} className="text-white bg-white/50 rounded-lg font-bold px-2 py-2">
+                Se déconnecter
+              </button>
+            </li>
+          ) : (
+            <li>
+              <Link to="/login" onClick={() => setIsOpen(false)}>
+                Connexion
+              </Link>
+            </li>
+          )}
         </ul>
       )}
     </nav>
