@@ -13,15 +13,14 @@ function Home() {
       {/* HERO SECTION */}
       <section className="hero relative h-screen">
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center h-9/10"
           style={{
             backgroundImage: "url(public/images/home_page.jpg)",
             filter: "brightness(0.7)",
           }}
         ></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-green-900/30 to-emerald-800/30" />
-        <div className="relative z-10 flex items-center justify-center h-full text-white px-4">
-          <div className="max-w-4xl text-center">
+        <div className="relative z-10 flex flex-col justify-end items-center h-9/10 text-white px-4 pb-12">
+          <div className="max-w-4xl text-center pb-28">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               🌾 Des Produits Locaux
               <br />
@@ -29,26 +28,26 @@ function Home() {
                 Directement à votre Cantine
               </span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-green-50">
+            <p className="text-xl md:text-2xl mb-8 text-white font-bold">
               Connectez votre établissement aux producteurs de votre région
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pb-16">
             <button
               onClick={() => navigate("/products")}
-              className="bg-white text-green-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-yellow-100 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="cursor-pointer bg-white/50 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-yellow-100/50 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               🛒 Découvrir les produits
             </button>
             {isAuthenticated ? (
               <button
                 onClick={() => navigate("/products")}
-                className="bg-yellow-400 text-gray-800 px-8 py-4 rounded-lg font-bold text-lg hover:bg-yellow-500 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="cursor-pointer bg-yellow-400/50 text-gray-800 px-8 py-4 rounded-lg font-bold text-lg hover:bg-yellow-500/50 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 🛒 Commander maintenant
               </button>
             ) : (
-              <div className="bg-yellow-400 text-gray-800 px-8 py-4 rounded-lg font-bold text-lg hover:bg-yellow-500 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+              <div className="cursor-pointer bg-yellow-400/50 text-gray-800 px-8 py-4 rounded-lg font-bold text-lg hover:bg-yellow-500 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
                 <button onClick={() => navigate("/register")}>
                   ✨ Créer un compte
                 </button>
@@ -260,7 +259,7 @@ function Home() {
       </section>
 
       {/* CTA FINAL */}
-      <section className="py-20 px-4 bg-gradient-to-r from-green-600 to-emerald-700 text-white text-center">
+      <section className="py-20 px-4 bg-[#002A22] text-white text-center">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Prêt à transformer votre cantine ?
@@ -270,7 +269,7 @@ function Home() {
           </p>
           <button
             onClick={() => navigate("/register")}
-            className="bg-white text-green-600 px-10 py-5 rounded-lg font-bold text-xl hover:bg-yellow-100 transition-all shadow-2xl hover:shadow-3xl transform hover:scale-105"
+            className="cursor-pointer bg-white text-[#002A22] px-10 py-5 rounded-lg font-bold text-xl hover:bg-yellow-100 transition-all shadow-2xl hover:shadow-3xl transform hover:scale-105"
           >
             🚀 Commencer maintenant
           </button>

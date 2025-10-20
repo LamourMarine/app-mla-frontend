@@ -34,64 +34,67 @@ const ProducersCarrousel: React.FC<ProducersCarrouselProps> = ({
     }
   };
 
-  // Ne pas afficher les flèches si pas assez de produits
   const showArrows = products.length > visibleCount;
 
-  return (
-    <div className="relative w-full mx-auto">
-      {/* Flèche gauche */}
-      {showArrows && (
-        <button
-          onClick={prevSlide}
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full p-3 shadow-lg z-10 transition-all hover:scale-110"
-          aria-label="Produit précédent"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-      )}
-
-      {/* Produits */}
-      <div className="flex justify-center gap-6 overflow-hidden py-4 px-2">
-        {getVisibleProducts().map((product) => (
-          <div 
-            key={product.id} 
-            className="flex-shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+return (
+  <div className="relative">
+    {/* Container avec largeur fixe pour les flèches (toujours présente) */}
+    <div className="flex items-center justify-center gap-4">
+      {/* Espace pour flèche gauche (invisible si pas de flèches) */}
+      <div className="w-12 flex-shrink-0">
+        {showArrows && (
+          <button
+            onClick={prevSlide}
+            className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full p-3 shadow-lg transition-all hover:scale-110"
+            aria-label="Produit précédent"
           >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+        )}
+      </div>
+
+      {/* Container des produits */}
+      <div className="flex gap-4 overflow-hidden" style={{ width: `${visibleCount * 21}rem` }}>
+        {getVisibleProducts().map((product) => (
+          <div key={product.id} className="flex-shrink-0 w-80">
             <ProductCard product={product} />
           </div>
         ))}
       </div>
 
-      {/* Flèche droite */}
-      {showArrows && (
-        <button
-          onClick={nextSlide}
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full p-3 shadow-lg z-10 transition-all hover:scale-110"
-          aria-label="Produit suivant"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
-      )}
-
-      {/* Indicateurs (points) */}
-      {showArrows && (
-        <div className="flex justify-center gap-2 mt-4">
-          {Array.from({ length: products.length }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setStartIndex(index)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                index === startIndex
-                  ? 'bg-green-600 w-6'
-                  : 'bg-gray-300 hover:bg-gray-400'
-              }`}
-              aria-label={`Aller au produit ${index + 1}`}
-            />
-          ))}
-        </div>
-      )}
+      {/* Espace pour flèche droite (invisible si pas de flèches) */}
+      <div className="w-12 flex-shrink-0">
+        {showArrows && (
+          <button
+            onClick={nextSlide}
+            className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full p-3 shadow-lg transition-all hover:scale-110"
+            aria-label="Produit suivant"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        )}
+      </div>
     </div>
-  );
+
+    {/* Indicateurs */}
+    {showArrows && (
+      <div className="flex justify-center gap-2 mt-6">
+        {Array.from({ length: products.length }).map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setStartIndex(index)}
+            className={`w-2 h-2 rounded-full transition-all ${
+              index === startIndex
+                ? 'bg-green-600 w-6'
+                : 'bg-gray-300 hover:bg-gray-400'
+            }`}
+            aria-label={`Aller au produit ${index + 1}`}
+          />
+        ))}
+      </div>
+    )}
+  </div>
+);
 };
 
 export default ProducersCarrousel;
