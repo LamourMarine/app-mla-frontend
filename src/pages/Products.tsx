@@ -20,6 +20,7 @@ function Products() {
       .catch((err) => {
         setError("Impossible de charger les produits");
         setLoading(false);
+        console.error("Erreur lors de la récupération des produits :", err);
       });
   }, []);
 
