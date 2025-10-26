@@ -5,7 +5,7 @@ import type { Product } from './Types/product';
 
 
 // URL de base de l'API
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://app-mla-backend.onrender.com/api/';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://app-mla-backend.onrender.com/api';
 export const ASSETS_BASE_URL = 'http://localhost';
 
 // Créer l'instance Axios
