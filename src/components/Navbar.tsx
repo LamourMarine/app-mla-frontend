@@ -57,9 +57,11 @@ const Navbar = ({ logo }: NavbarProps) => {
 
   return (
     <nav className="bg-[#002A22] sticky top-0 z-50">
-      <h1>Mon App</h1>
-      {user && <span>Bonjour {user.name}</span>}
       <div className="max-w-9/10 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex items-center space-x-4">
+        <h1 className="text-white font-bold">Mon App</h1>
+        {user && <span className="text-white">Bonjour {user.name}</span>}
+      </div>
         <div className="flex justify-between items-center h-16">
           <img
             src={logo}
