@@ -14,8 +14,8 @@ function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await api.post("/login_check", {
-        username: email, // ← Changé de email à username
+      const response = await api.post("/api/login_check", {
+        email,
         password,
       });
       login(response.data.token); // Redirection après connexion
