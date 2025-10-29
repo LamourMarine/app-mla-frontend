@@ -15,7 +15,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await api.post("/api/login_check", {
-        username: email, // ← Changé de email à username
+        email,
         password,
       });
       login(response.data.token); // Redirection après connexion
