@@ -18,7 +18,10 @@ function Login() {
         email,
         password,
       });
-      login(response.data.token); // Redirection après connexion
+      const token = response.data.token;
+
+      login(token);
+      navigate("/products");
 
       navigate("/products");
     } catch (err) {
