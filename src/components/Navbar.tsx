@@ -2,15 +2,42 @@ import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 interface NavbarProps {
   logo: string;
   className?: string;
 }
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  roles: string[];
+  address?: string;
+  phone_number?: string;
+  photo?: string | null;
+}
+
 const Navbar = ({ logo }: NavbarProps) => {
   const { isAuthenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios
+      .get("https://app-mla-backend.onrender.com/api/users/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => setUser(res.data))
+        .catch((err) => console.error(err));
+    }
+  })
 
   const handleLogout = () => {
     logout(); // Nettoie le localStorage
@@ -30,6 +57,8 @@ const Navbar = ({ logo }: NavbarProps) => {
 
   return (
     <nav className="bg-[#002A22] sticky top-0 z-50">
+      <h1>Mon App</h1>
+      {user && <span>Bonjour {user.name}</span>}
       <div className="max-w-9/10 mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <img
