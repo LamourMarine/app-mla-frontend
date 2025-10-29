@@ -14,7 +14,7 @@ function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await api.post("/api/login_check", {
+      const response = await api.post("/login_check", {
         email,
         password,
       });
