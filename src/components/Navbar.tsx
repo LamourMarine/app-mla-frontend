@@ -9,15 +9,15 @@ interface NavbarProps {
   className?: string;
 }
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  roles: string[];
-  address?: string;
-  phone_number?: string;
-  photo?: string | null;
-}
+// interface User {
+//   id: number;
+//   name: string;
+//   email: string;
+//   roles: string[];
+//   address?: string;
+//   phone_number?: string;
+//   photo?: string | null;
+// }
 
 const Navbar = ({ logo }: NavbarProps) => {
   const navigate = useNavigate();
