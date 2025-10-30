@@ -5,7 +5,6 @@ import Layout from './layouts/Layout';
 import Logo from './assets/logo_2.png';
 import LoginPage from './pages/LoginPage';
 import Products from './pages/Products';
-import Producers from './pages/Producers';
 import Register from './pages/Register';
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/producers" element={<Producers/>} />
       </Routes>
       </Layout>
     </Router>
