@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.removeItem("token");
       })
       .finally(() => setLoading(false));
-  }, [token]);
+  }, []);
 
   const login = (newToken: string) => {
     localStorage.setItem("token", newToken);
