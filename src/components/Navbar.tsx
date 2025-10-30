@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
+
 
 interface NavbarProps {
   logo: string;
@@ -23,22 +24,29 @@ const Navbar = ({ logo }: NavbarProps) => {
   const { isAuthenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [user, setUser] = useState<User | null>(null);
+const [user, setUser] = useState<User | null>(null);
+const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      axios
-      .get("https://app-mla-backend.onrender.com/api/users/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => setUser(res.data))
-        .catch((err) => console.error(err));
-    }
-  })
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  
+  if (!token) {
+    setLoading(false);
+    return;
+  }
+  
+  api.get("/api/users/me")
+    .then((res) => {
+      setUser(res.data);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error(err);
+      setLoading(false);
+    });
+}, []);
 
+if (loading) return <div>Chargement...</div>;
   const handleLogout = () => {
     logout(); // Nettoie le localStorage
     navigate("/");
