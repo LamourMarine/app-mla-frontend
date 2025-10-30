@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import api from "../api";
 
 
 interface NavbarProps {
@@ -21,33 +20,12 @@ interface User {
 }
 
 const Navbar = ({ logo }: NavbarProps) => {
-  const { isAuthenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-
-const [user, setUser] = useState<User | null>(null);
-const [loading, setLoading] = useState(true);
-
-useEffect(() => {
-  const token = localStorage.getItem("token");
-  
-  if (!token) {
-    setLoading(false);
-    return;
-  }
-  
-  api.get("/api/users/me")
-    .then((res) => {
-      setUser(res.data);
-      setLoading(false);
-    })
-    .catch((err) => {
-      console.error(err);
-      setLoading(false);
-    });
-}, []);
+  const { user, isAuthenticated, logout, loading } = useContext(AuthContext);
 
 if (loading) return <div>Chargement...</div>;
-  const handleLogout = () => {
+
+const handleLogout = () => {
     logout(); // Nettoie le localStorage
     navigate("/");
     setIsOpen(false);
@@ -67,7 +45,6 @@ if (loading) return <div>Chargement...</div>;
     <nav className="bg-[#002A22] sticky top-0 z-50">
       <div className="max-w-9/10 mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex items-center space-x-4">
-        <h1 className="text-white font-bold">Mon App</h1>
         {user && <span className="text-white">Bonjour {user.name}</span>}
       </div>
         <div className="flex justify-between items-center h-16">
