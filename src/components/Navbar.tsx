@@ -3,7 +3,6 @@ import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-
 interface NavbarProps {
   logo: string;
   className?: string;
@@ -21,12 +20,25 @@ interface NavbarProps {
 
 const Navbar = ({ logo }: NavbarProps) => {
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout, loading } = useContext(AuthContext);
+  const {
+    user,
+    isAuthenticated,
+    logout: authLogout,
+    loading,
+  } = useContext(AuthContext);
 
-if (loading) return <div>Chargement...</div>;
+  if (loading) {
+    return (
+      <nav className="bg-[#002A22] sticky top-0 z-50">
+        <div className="h-16 flex items-center justify-center text-white">
+          Chargement...
+        </div>
+      </nav>
+    );
+  }
 
-const handleLogout = () => {
-    logout(); // Nettoie le localStorage
+  const handleLogout = () => {
+    authLogout();
     navigate("/");
     setIsOpen(false);
   };
@@ -44,17 +56,18 @@ const handleLogout = () => {
   return (
     <nav className="bg-[#002A22] sticky top-0 z-50">
       <div className="max-w-9/10 mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex items-center space-x-4">
-        {user && <span className="text-white">Bonjour {user.name}</span>}
-      </div>
+        <div className="flex items-center space-x-4">
+          {user && <span className="text-white">Bonjour {user.name}</span>}
+        </div>
         <div className="flex justify-between items-center h-16">
           <img
             src={logo}
             alt="Cantine Verte"
             className="w-[50px] h-[40px] mt-[1.5vh]"
-            />
-            <p className="text-[#3ab54a] font-bold text-lg md:text-2xl md:text-2xl text-nav-text italic mb-2 md:mb-0 md:ml-6 md:mr-auto md:mt-4 text-center md:text-left">
-              Cantine Verte</p>
+          />
+          <p className="text-[#3ab54a] font-bold text-lg md:text-2xl md:text-2xl text-nav-text italic mb-2 md:mb-0 md:ml-6 md:mr-auto md:mt-4 text-center md:text-left">
+            Cantine Verte
+          </p>
         </div>
         <ul className="hidden md:flex flex-row items-center space-x-8 ml-auto pb-2">
           <li>
@@ -90,37 +103,37 @@ const handleLogout = () => {
             </Link>
           </li>
           <div className="hidden md:flex flex-row items-center space-x-8 ml-auto">
-          {isAuthenticated ? (
-            <>
-              <li>
-                <button
-                  onClick={handleLogout}
-                  className="btn cursor-pointer bg-white text-[#002A22] px-4 py-2 rounded-lg font-semibold hover:bg-amber-100 transition-all shadow-md"
-                >
-                  Se déconnecter
-                </button>
-              </li>
-            </>
-          ) : (
-            <>
-              <li>
-                <Link
-                  to="/login"
-                  className="btn bg-white text-[#002A22] px-4 py-2 rounded-lg font-semibold hover:bg-amber-100 transition-all shadow-md"
-                >
-                  Connexion
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/register"
-                  className="btn bg-white text-[#002A22] px-4 py-2 rounded-lg font-semibold hover:bg-amber-100 transition-all shadow-md"
-                >
-                  Créer un compte
-                </Link>
-              </li>
-            </>
-          )}
+            {isAuthenticated ? (
+              <>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="btn cursor-pointer bg-white text-[#002A22] px-4 py-2 rounded-lg font-semibold hover:bg-amber-100 transition-all shadow-md"
+                  >
+                    Se déconnecter
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    to="/login"
+                    className="btn bg-white text-[#002A22] px-4 py-2 rounded-lg font-semibold hover:bg-amber-100 transition-all shadow-md"
+                  >
+                    Connexion
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/register"
+                    className="btn bg-white text-[#002A22] px-4 py-2 rounded-lg font-semibold hover:bg-amber-100 transition-all shadow-md"
+                  >
+                    Créer un compte
+                  </Link>
+                </li>
+              </>
+            )}
           </div>
         </ul>
         {/* Menu mobile (burger) */}
@@ -164,7 +177,10 @@ const handleLogout = () => {
           </li>{" "}
           {isAuthenticated ? (
             <li>
-              <button onClick={handleLogout} className="text-white bg-white/50 rounded-lg font-bold px-2 py-2">
+              <button
+                onClick={handleLogout}
+                className="text-white bg-white/50 rounded-lg font-bold px-2 py-2"
+              >
                 Se déconnecter
               </button>
             </li>
