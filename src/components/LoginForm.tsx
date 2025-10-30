@@ -13,22 +13,23 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+
     try {
-      const response = await api.post("/login_check", {
+      const response = await api.post("/api/login_check", {
         email,
         password,
       });
+
       const token = response.data.token;
 
-      login(token);
-      navigate("/products");
+      await login(token);
 
       navigate("/products");
     } catch (err) {
       setError("Email ou mot de passe incorrect");
     }
   };
-
   return (
     <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md mx-auto mt-12">
       <form
