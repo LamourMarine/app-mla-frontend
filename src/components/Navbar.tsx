@@ -27,6 +27,17 @@ const Navbar = ({ logo }: NavbarProps) => {
     loading,
   } = useContext(AuthContext);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 500);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   if (loading) {
     return (
       <nav className="bg-[#002A22] sticky top-0 z-50">
@@ -42,17 +53,6 @@ const Navbar = ({ logo }: NavbarProps) => {
     navigate("/");
     setIsOpen(false);
   };
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 500);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <nav className="bg-[#002A22] sticky top-0 z-50">
       <div className="max-w-9/10 mx-auto px-4 sm:px-6 lg:px-8">

@@ -33,20 +33,16 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Charge au montage initial
   useEffect(() => {
-    const savedToken = localStorage.getItem("token");
-
-    if (!savedToken) {
+    if (!token) {
       setLoading(false);
       return;
     }
-
-    setToken(savedToken);
 
     api
       .get("/api/users/me")
