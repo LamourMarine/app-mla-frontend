@@ -5,7 +5,7 @@ import type { Product } from './Types/product';
 
 
 // URL de base de l'API
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://app-mla-backend.onrender.com/api';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 export const ASSETS_BASE_URL = 'http://localhost:8000';
 
 // Créer l'instance Axios
@@ -79,7 +79,7 @@ interface CreateOrderData {
 export const authAPI = {
   // Connexion
   login: async (credentials: LoginCredentials) => {
-    const response = await axios.post(`${API_BASE_URL}/login_checkw`, credentials);
+    const response = await axios.post(`${API_BASE_URL}/login_check`, credentials);
     if (response.data.token) {
       localStorage.setItem('token', response.data.token);
       const user = decodeToken(response.data.token);
@@ -90,7 +90,7 @@ export const authAPI = {
 
   // Inscription
   register: async (data: RegisterData) => {
-    const response = await axios.post(`${API_BASE_URL}/api/register`, data);
+    const response = await axios.post(`${API_BASE_URL}/register`, data);
     return response.data;
   },
 
@@ -138,12 +138,12 @@ export const authAPI = {
 
 export const producerAPI = {
   getAll: async () => {
-    const response = await api.get('/api/producers');
+    const response = await api.get('/producers');
     return response.data;
   },
   
   getProducts: async (producerId: number) => {
-    const response = await api.get(`/api/products?seller=${producerId}`);
+    const response = await api.get(`/products?seller=${producerId}`);
     return response.data;
   }
 };
@@ -153,31 +153,31 @@ export const producerAPI = {
 export const productAPI = {
   // Récupérer tous les produits
   getAll: async () => {
-    const response = await api.get<Product[]>('/api/products');
+    const response = await api.get<Product[]>('/products');
     return response.data;
   },
 
   // Récupérer un produit par ID
   getById: async (id: number) => {
-    const response = await api.get<Product>(`/api/products/${id}`);
+    const response = await api.get<Product>(`/products/${id}`);
     return response.data;
   },
 
   // Créer un produit (producteur uniquement)
   create: async (productData: Partial<Product>) => {
-    const response = await api.post<Product>('/api/products', productData);
+    const response = await api.post<Product>('/products', productData);
     return response.data;
   },
 
   // Modifier un produit
   update: async (id: number, productData: Partial<Product>) => {
-    const response = await api.put<Product>(`/api/products/${id}`, productData);
+    const response = await api.put<Product>(`/products/${id}`, productData);
     return response.data;
   },
 
   // Supprimer un produit
   delete: async (id: number) => {
-    const response = await api.delete(`/api/products/${id}`);
+    const response = await api.delete(`/products/${id}`);
     return response.data;
   },
 };
@@ -187,19 +187,19 @@ export const productAPI = {
 export const orderAPI = {
   // Créer une commande
   create: async (orderData: CreateOrderData) => {
-    const response = await api.post('/api/orders', orderData);
+    const response = await api.post('/orders', orderData);
     return response.data;
   },
 
   // Récupérer les commandes de l'utilisateur connecté
   getMyOrders: async () => {
-    const response = await api.get('/api/orders');
+    const response = await api.get('/orders');
     return response.data;
   },
 
   // Récupérer une commande par ID
   getById: async (id: number) => {
-    const response = await api.get(`/api/orders/${id}`);
+    const response = await api.get(`/orders/${id}`);
     return response.data;
   },
 };
@@ -208,7 +208,7 @@ export const orderAPI = {
 
 export const categoryAPI = {
   getAll: async () => {
-    const response = await api.get('/api/categories');
+    const response = await api.get('/categories');
     return response.data;
   },
 };
