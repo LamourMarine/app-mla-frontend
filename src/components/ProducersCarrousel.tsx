@@ -54,7 +54,7 @@ return (
       </div>
 
       {/* Container des produits */}
-      <div className="flex gap-4 overflow-hidden" style={{ width: `${visibleCount * 21}rem` }}>
+      <div className="flex overflow-hidden" style={{ width: `${visibleCount * 21}rem` }}>
         {getVisibleProducts().map((product) => (
           <div key={product.id} className="flex-shrink-0 w-80">
             <ProductCard product={product} />
@@ -95,6 +95,6 @@ return (
     )}
   </div>
 );
-};
+}
 
 export default ProducersCarrousel;

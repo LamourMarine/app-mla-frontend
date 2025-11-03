@@ -56,9 +56,6 @@ const Navbar = ({ logo }: NavbarProps) => {
   return (
     <nav className="bg-[#002A22] sticky top-0 z-50">
       <div className="max-w-9/10 mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center space-x-4">
-          {user && <span className="text-white">Bonjour {user.name}</span>}
-        </div>
         <div className="flex justify-between items-center h-16">
           <img
             src={logo}
@@ -102,9 +99,19 @@ const Navbar = ({ logo }: NavbarProps) => {
               Contact
             </Link>
           </li>
+
+          {user && (
+            <li>
+              <span className="text-white font-semibold ">
+                🌿 Bonjour {user.name}
+              </span>
+            </li>
+          )}
+
           <div className="hidden md:flex flex-row items-center space-x-8 ml-auto">
             {isAuthenticated ? (
               <>
+              
                 <li>
                   <button
                     onClick={handleLogout}

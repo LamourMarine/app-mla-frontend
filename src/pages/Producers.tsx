@@ -43,28 +43,41 @@ interface ProducerSectionProps {
 function ProducerSection({ producer }: ProducerSectionProps) {
   const [products, setProducts] = useState<Product[]>([]);
 
+  // Hook pour détecter mobile de manière réactive
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const visibleCount = isMobile ? 1 : 4;
+
   useEffect(() => {
     // Récupérer les produits de ce producteur
     productAPI.getAll().then((data) => {
-      console.log("✅ Tous les produits récupérés :", data);
-      console.log("👤 Producteur courant :", producer);
       const producerProducts = data.filter((p) => p.seller?.id === producer.id);
-      console.log("🎯 Produits trouvés :", producerProducts);
-
       setProducts(producerProducts);
     });
   }, [producer.id]);
 
   return (
-    <div className="producer-section mb-12 mt-10">
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-        <ProducerCard producer={producer} />
+    <div className="bg-[#002A22] p-6 md:p-8 rounded-lg mb-6">
+      <div className="flex flex-col md:flex-row gap-6 items-center md:items-stretch">
+        {/* Carte Producteur */}
+        <div className="w-full max-w-xs md:max-w-[300px] flex-shrink-0">
+          <ProducerCard producer={producer} />
+        </div>
 
-        {products.length > 0 ? (
-          <ProducersCarrousel products={products} visibleCount={3} />
-        ) : (
-          <p>Aucun produit disponible</p>
-        )}
+        {/* Carrousel Produits */}
+        <div className="w-full md:flex-1">
+          {products.length > 0 ? (
+            <ProducersCarrousel products={products} visibleCount={visibleCount} />
+          ) : (
+            <p className="text-white">Aucun produit disponible</p>
+          )}
+        </div>
       </div>
     </div>
   );
