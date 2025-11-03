@@ -79,6 +79,9 @@ interface CreateOrderData {
 export const authAPI = {
   // Connexion
   login: async (credentials: LoginCredentials) => {
+    const url = `${API_BASE_URL}/login_check`;
+  console.log('🔍 API_BASE_URL:', API_BASE_URL);
+  console.log('🔍 URL complète appelée:', url);
     const response = await axios.post(`${API_BASE_URL}/login_check`, credentials);
     if (response.data.token) {
       localStorage.setItem('token', response.data.token);
