@@ -8,6 +8,10 @@ import type { Product } from './Types/product';
 export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 export const ASSETS_BASE_URL = 'http://localhost:8000';
 
+console.log('FICHIER api.tsx CHARGÉ !');
+console.log('import.meta.env.VITE_API_URL:', import.meta.env.VITE_API_URL);
+console.log('API_BASE_URL finale:', API_BASE_URL);
+
 // Créer l'instance Axios
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
