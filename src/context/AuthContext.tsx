@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
 
     api
-      .get("/api/users/me")
+      .get("/users/me")
       .then((res) => setUser(res.data))
       .catch(() => {
         setToken(null);
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem("token", newToken);
     setToken(newToken);
 
-    const res = await api.get("/api/users/me");
+    const res = await api.get("/users/me");
     setUser(res.data);
   };
 
