@@ -2,7 +2,7 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import api from "../api";
+import { authAPI } from "../api";
 
 function Login() {
   const { login } = useContext(AuthContext);
@@ -16,15 +16,13 @@ function Login() {
     setError("");
 
     try {
-      const response = await api.post("/api/login_check", {
+      const response = await authAPI.login({
         email,
         password,
       });
 
-      const token = response.data.token;
-
+      const token = response.token;
       await login(token);
-
       navigate("/products");
     } catch (err) {
       setError("Email ou mot de passe incorrect");
