@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Leaf, Users, ShoppingCart, Star } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
+import homePageImage from "../assets/home_page.jpg";
 
 function Home() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function Home() {
         <div
           className="absolute inset-0 bg-cover bg-center h-9/10"
           style={{
-            backgroundImage: "url(public/images/home_page.jpg)",
+            backgroundImage: `url(${homePageImage})`,
             filter: "brightness(0.7)",
           }}
         ></div>

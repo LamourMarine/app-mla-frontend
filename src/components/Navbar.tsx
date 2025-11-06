@@ -93,6 +93,15 @@ const Navbar = ({ logo }: NavbarProps) => {
           </li>
           <li>
             <Link
+              to="/producer/products"
+              className="text-white hover:text-amber-200 font-semibold transition-colors"
+            >
+              Mes produits
+            </Link>
+          </li>
+
+          <li>
+            <Link
               to="/contact"
               className="text-white hover:text-amber-200 font-semibold transition-colors"
             >

@@ -7,6 +7,9 @@ import LoginPage from './pages/LoginPage';
 import Products from './pages/Products';
 import Producers from './pages/Producers';
 import Register from './pages/Register';
+import ProducerProductsList from './pages/producer/ProducerProductsList';
+import ProductCreatePage from './pages/producer/ProductCreatePage';
+import { ProductEditPage } from './pages/producer/ProductEditPage';
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/products" element={<Products />} />
         <Route path="/producers" element={<Producers/>} />
+        <Route path="/producer/products" element={<ProducerProductsList />} />
+        <Route path="/producer/products/create" element={<ProductCreatePage />} />
+        <Route path="/producer/products/edit/:id" element={<ProductEditPage />} />
       </Routes>
       </Layout>
     </Router>
