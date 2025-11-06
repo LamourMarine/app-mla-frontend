@@ -1,7 +1,7 @@
 // src/api.tsx
 import axios from 'axios';
 import type { AxiosInstance } from 'axios';
-import type { Product } from './Types/product';
+import type { Product, ProductPayload } from './Types/product';
 
 
 // URL de base de l'API
@@ -13,7 +13,7 @@ console.log('import.meta.env.VITE_API_URL:', import.meta.env.VITE_API_URL);
 console.log('API_BASE_URL finale:', API_BASE_URL);
 
 // Créer l'instance Axios
-const api: AxiosInstance = axios.create({
+export const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -166,6 +166,12 @@ export const productAPI = {
     return response.data;
   },
 
+  // Producteur récupére ses produits
+  getMine: async () => {
+    const response = await api.get<Product[]>('/products?mine=true');
+    return response.data;
+  },
+
   // Récupérer un produit par ID
   getById: async (id: number) => {
     const response = await api.get<Product>(`/products/${id}`);
@@ -173,14 +179,14 @@ export const productAPI = {
   },
 
   // Créer un produit (producteur uniquement)
-  create: async (productData: Partial<Product>) => {
+  create: async (productData: ProductPayload) => {
     const response = await api.post<Product>('/products', productData);
     return response.data;
   },
 
   // Modifier un produit
-  update: async (id: number, productData: Partial<Product>) => {
-    const response = await api.put<Product>(`/products/${id}`, productData);
+  update: async (id: number, data: ProductPayload) => {
+    const response = await api.put<Product>(`/products/${id}`, data);
     return response.data;
   },
 

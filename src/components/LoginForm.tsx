@@ -5,29 +5,40 @@ import { useNavigate } from "react-router-dom";
 import { authAPI } from "../api";
 
 function Login() {
+  // Récupère la fonction login du contexte global d'authentification
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  
+  // États locaux du formulaire
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); // Gère les messages d'erreur
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-
+    e.preventDefault(); // Empêche le rechargement de la page
+    setError(""); // Réinitialise les erreurs précédentes
+    
     try {
+      // ÉTAPE 1 : Envoie les identifiants à l'API
       const response = await authAPI.login({
         email,
         password,
       });
-
+      
+      // ÉTAPE 2 : Récupère le token JWT de la réponse
       const token = response.token;
+      
+      // ÉTAPE 3 : Enregistre le token dans le contexte (et probablement localStorage)
       await login(token);
+      
+      // ÉTAPE 4 : Redirige vers la page produits après connexion réussie
       navigate("/products");
     } catch (err) {
+      // Si l'API renvoie une erreur (mauvais identifiants, serveur down, etc.)
       setError("Email ou mot de passe incorrect");
     }
   };
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md mx-auto mt-12">
       <form
@@ -38,22 +49,23 @@ function Login() {
           className="w-full bg-emerald-500 text-white placeholder-white/70 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-700"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)} // Met à jour l'état à chaque frappe
           placeholder="Email"
           required
         />
-
+        
         <input
           className="w-full bg-emerald-500 text-white placeholder-white/70 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-700"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)} // Met à jour l'état à chaque frappe
           placeholder="Mot de passe"
           required
         />
-
+        
+        {/* Affiche le message d'erreur seulement s'il existe */}
         {error && <p className="text-red-500">{error}</p>}
-
+        
         <button
           type="submit"
           className="bg-amber-500 text-white rounded-md px-4 py-2 hover:bg-amber-600 transition"

@@ -20,3 +20,13 @@ export interface Product {
     name: string;
   };
 }
+
+export type ProductPayload = {
+  name: string;
+  price: number; // String car DECIMAL backend
+  categoryId: number;
+  unitId: number;
+  isBio: boolean;
+  availability: boolean;
+  image?: File | string;
+};

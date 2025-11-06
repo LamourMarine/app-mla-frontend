@@ -16,6 +16,7 @@ interface Producer {
 function Producers() {
   const [producers, setProducers] = useState<Producer[]>([]);
 
+  // Charge tous les producteurs au montage du composant
   useEffect(() => {
     producerAPI.getAll().then(setProducers);
   }, []);
@@ -28,6 +29,7 @@ function Producers() {
         </h1>
       </div>
       <div className="producers-page">
+        {/* Affiche une section par producteur avec sa carte et ses produits */}
         {producers.map((producer) => (
           <ProducerSection key={producer.id} producer={producer} />
         ))}
@@ -42,25 +44,29 @@ interface ProducerSectionProps {
 
 function ProducerSection({ producer }: ProducerSectionProps) {
   const [products, setProducts] = useState<Product[]>([]);
-
-  // Hook pour détecter mobile de manière réactive
+  
+  // Détecte si on est sur mobile pour adapter le nombre de produits visibles
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
+  // Met à jour l'état mobile quand on redimensionne la fenêtre
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
+    // IMPORTANT: cleanup pour éviter les fuites mémoire
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // 1 produit visible sur mobile, 4 sur desktop
   const visibleCount = isMobile ? 1 : 4;
 
+  // Charge uniquement les produits de ce producteur
   useEffect(() => {
-    // Récupérer les produits de ce producteur
     productAPI.getAll().then((data) => {
+      // Filtre pour ne garder que les produits vendus par ce producteur
       const producerProducts = data.filter((p) => p.seller?.id === producer.id);
       setProducts(producerProducts);
     });
-  }, [producer.id]);
+  }, [producer.id]); // Se recharge si le producteur change
 
   return (
     <div className="bg-[#002A22] p-6 md:p-8 rounded-lg mb-6">
@@ -69,7 +75,7 @@ function ProducerSection({ producer }: ProducerSectionProps) {
         <div className="w-full max-w-xs md:max-w-[300px] flex-shrink-0">
           <ProducerCard producer={producer} />
         </div>
-
+        
         {/* Carrousel Produits */}
         <div className="w-full md:flex-1">
           {products.length > 0 ? (
@@ -82,4 +88,5 @@ function ProducerSection({ producer }: ProducerSectionProps) {
     </div>
   );
 }
+
 export default Producers;
