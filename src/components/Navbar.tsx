@@ -20,6 +20,7 @@ interface NavbarProps {
 
 const Navbar = ({ logo }: NavbarProps) => {
   const navigate = useNavigate();
+  const { isAdmin } = useContext(AuthContext);
   const {
     user,
     isAuthenticated,
@@ -108,6 +109,17 @@ const Navbar = ({ logo }: NavbarProps) => {
               Contact
             </Link>
           </li>
+          {/* Lien visible uniquement si admin */}
+        {isAdmin && (
+          <li>
+            <Link
+              to="/admin"
+              className="text-white hover:text-green-300 font-semibold transition-colors"
+            >
+              Dashboard
+            </Link>
+          </li>
+        )}
 
           {user && (
             <li>

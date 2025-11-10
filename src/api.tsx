@@ -154,7 +154,10 @@ export const producerAPI = {
   getProducts: async (producerId: number) => {
     const response = await api.get(`/products?seller=${producerId}`);
     return response.data;
-  }
+  },
+
+  delete: (id: number) => 
+    api.delete(`/producers/${id}`),
 };
 
 // ==================== PRODUITS ====================

@@ -10,6 +10,8 @@ import Register from './pages/Register';
 import ProducerProductsList from './pages/producer/ProducerProductsList';
 import ProductCreatePage from './pages/producer/ProductCreatePage';
 import { ProductEditPage } from './pages/producer/ProductEditPage';
+import { AdminRoute } from './components/AdminRoute';
+import { AdminDashboard } from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route path="/producer/products" element={<ProducerProductsList />} />
         <Route path="/producer/products/create" element={<ProductCreatePage />} />
         <Route path="/producer/products/edit/:id" element={<ProductEditPage />} />
+        <Route path="/admin" element={<AdminRoute> <AdminDashboard /> </AdminRoute>} />
+
       </Routes>
       </Layout>
     </Router>
