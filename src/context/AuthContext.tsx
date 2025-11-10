@@ -8,10 +8,12 @@ type User = {
   photo: string | null;
   address: string;
   email: string;
+  roles: string[];
 };
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  isAdmin: boolean;
   login: (token: string) => void;
   logout: () => void;
   token: string | null;
@@ -25,6 +27,7 @@ interface AuthProviderProps {
 
 export const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
+  isAdmin: false,
   login: () => {},
   logout: () => {},
   token: null,
@@ -36,6 +39,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const isAuthenticated = !!token;
+  const isAdmin = user?.roles.includes("ROLE_ADMIN") ?? false;
 
   // Charge au montage initial
   useEffect(() => {
@@ -54,14 +59,31 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       .finally(() => setLoading(false));
   }, []);
 
-  const login = async (newToken: string) => {
-    localStorage.setItem("token", newToken);
-    setToken(newToken);
+const login = async (newToken: string) => {
+  localStorage.setItem("token", newToken);
+  setToken(newToken);
 
-    const res = await api.get("/users/me");
-    setUser(res.data);
-  };
+  try {
+    const res = await api.get("/users/me", {
+      headers: { Authorization: `Bearer ${newToken}` },
+    });
 
+    setUser({
+      id: res.data.id,
+      name: res.data.name,
+      photo: res.data.photo,
+      address: res.data.address,
+      email: res.data.email,
+      roles: res.data.roles,
+    });
+    console.log("Utilisateur connecté :", res.data);
+  } catch (error) {
+    console.error("Erreur lors du chargement de l’utilisateur :", error);
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem("token");
+  }
+};
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -72,6 +94,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     <AuthContext.Provider
       value={{
         isAuthenticated: !!user,
+        isAdmin,
         login,
         logout,
         token,
