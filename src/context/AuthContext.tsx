@@ -39,7 +39,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const isAuthenticated = !!token;
   const isAdmin = user?.roles.includes("ROLE_ADMIN") ?? false;
 
   // Charge au montage initial
