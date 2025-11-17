@@ -11,7 +11,7 @@ import ProducerProductsList from './pages/producer/ProducerProductsList';
 import ProductCreatePage from './pages/producer/ProductCreatePage';
 import { ProductEditPage } from './pages/producer/ProductEditPage';
 import { AdminRoute } from './components/AdminRoute';
-import { AdminDashboard } from "./pages/AdminDashboard";
+import  AdminDashboard  from "./pages/AdminDashboard";
 
 function App() {
   return (
