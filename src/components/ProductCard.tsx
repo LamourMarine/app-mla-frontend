@@ -11,63 +11,80 @@ function ProductCard({ product }: ProductCardProps) {
     product.imageProduct ||
     (product as any).image_Product ||
     "/images/default.jpg";
+  
   const imageUrl = imagePath.startsWith("/")
     ? `${ASSETS_BASE_URL}${imagePath}`
     : imagePath;
 
   return (
-    <div className="product-card border-2 border-green-200 rounded-lg shadow-md hover:shadow-xl transition-all p-4 max-w-xs bg-white relative group overflow-hidden cursor-pointer">
-      {/* BOUTON overlay */}
-      {product.availability && (
-        <button
-          className="btn-add-cart w-full h-12 px-4 py-2 text-white font-semibold rounded-lg shadow-md transition-all cursor-pointer
-                 md:absolute md:top-0 md:left-1/2 md:-translate-x-1/2
-                 md:opacity-0 group-hover:md:opacity-80
-                 md:bg-gradient-to-r
-                 md:from-[rgba(255,191,64,0.8)] md:to-[rgba(255,136,0,0.8)]
-                 md:backdrop-blur-lg"
-        >
-          🛒 Ajouter au panier
-        </button>
-      )}
-      <img
-        src={imageUrl}
-        alt={product.name}
-        className="w-full h-48 object-cover rounded-md mb-3"
-      />
-
-      <div className="flex justify-between items-start mb-2">
-        <h3 className="text-lg font-bold text-gray-800">{product.name}</h3>
-        {product.isBio && (
-          <span className="badge-bio bg-green-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
-            🌱 BIO
-          </span>
+    <div className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
+      {/* Image avec overlay au hover */}
+      <div className="relative h-56 bg-gray-50 overflow-hidden">
+        <img
+          src={imageUrl}
+          alt={product.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+        />
+        
+        {/* Bouton Ajouter au panier - apparaît au hover */}
+        {product.availability && (
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <button className="px-6 py-3 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-200 transform translate-y-2 group-hover:translate-y-0">
+              🛒 Ajouter au panier
+            </button>
+          </div>
         )}
       </div>
 
-      <p className="description text-gray-600 text-sm mb-3 line-clamp-2">
-        {product.descriptionProduct}
-      </p>
+      {/* Contenu */}
+      <div className="p-5">
+        {/* Header : Nom + Badge Bio */}
+        <div className="flex items-start justify-between gap-2 mb-3">
+          <h3 className="text-lg font-semibold text-gray-900 leading-tight flex-1">
+            {product.name}
+          </h3>
+          {product.isBio && (
+            <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full font-medium whitespace-nowrap">
+              🌱 Bio
+            </span>
+          )}
+        </div>
 
-      <div className="price-section border-t border-green-100 pt-3">
-        <p className="price text-2xl font-bold text-green-600 mb-3">
-          {product.price}€
-          <span className="text-sm text-gray-500">
-            /{product.unit?.name ?? "unité"}
-          </span>
+        {/* Description */}
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+          {product.description_Product}
         </p>
 
-        {!product.availability && (
-          <span className="unavailable block text-center bg-red-100 text-red-600 py-2 rounded-lg font-semibold">
-            ❌ Rupture de stock
-          </span>
-        )}
-      </div>
+        {/* Prix */}
+        <div className="mb-4">
+          <div className="flex items-baseline gap-1">
+            <span className="text-2xl font-bold text-gray-900">
+              {product.price}€
+            </span>
+            <span className="text-sm text-gray-500">
+              / {product.unit?.name ?? "unité"}
+            </span>
+          </div>
+        </div>
 
-      <p className="producer text-sm text-gray-500 mt-3 italic">
-        👨‍🌾 Par {product.seller?.name ?? "Producteur"}
-      </p>
+        {/* Statut disponibilité */}
+        {!product.availability && (
+          <div className="mb-4 px-3 py-2 bg-red-50 border border-red-200 rounded-lg">
+            <span className="text-sm text-red-600 font-medium">
+              ❌ Rupture de stock
+            </span>
+          </div>
+        )}
+
+        {/* Producteur */}
+        <div className="pt-4 border-t border-gray-100">
+          <p className="text-sm text-gray-500">
+            👨‍🌾 {product.seller?.name ?? "Producteur"}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
+
 export default ProductCard;

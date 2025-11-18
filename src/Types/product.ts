@@ -2,7 +2,7 @@
 export interface Product {
   id: number;
   name: string;
-  description: string;
+  description_Product: string;
   imageProduct: string;
   isBio: boolean;
   price: number;

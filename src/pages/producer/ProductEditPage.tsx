@@ -49,7 +49,7 @@ export const ProductEditPage = () => {
         setForm({
           name: product.name,
           price: product.price,
-          description_Product: product.description,
+          description_Product: product.description_Product,
           categoryId: product.category.id,
           unitId: product.unit.id,
           isBio: product.isBio,
@@ -87,7 +87,7 @@ return (
     <div className="max-w-2xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold text-red-900 mb-2">
+        <h1 className="text-3xl font-semibold text-gray-900 mb-2">
           Modifier {form.name || 'le produit'}
         </h1>
         <p className="text-gray-600">
