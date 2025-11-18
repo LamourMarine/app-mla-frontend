@@ -1,29 +1,38 @@
 import { productAPI } from "../../api";
-import { Link } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { Product } from "../../Types/product";
 
 export default function ProducerProductsList() {
   const [products, setProducts] = useState<Product[]>([]);
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
     productAPI.getMine().then(setProducts);
   }, []);
-
+  
+  const handleDelete = (id: number) => {
+    // À implémenter plus tard
+    console.log('Supprimer', id);
+  };
+  
   return (
     <div>
-      <h1>Mes Produits</h1>
-
-      <Link to="/producer/products/create">Ajouter un produit</Link>
-
-      <ul>
-        {products.map((p) => (
-          <li key={p.id}>
-            {p.name} - {p.price} €
-            <Link to={`/producer/products/edit/${p.id}`}>Modifier</Link>
-          </li>
-        ))}
-      </ul>
+      <button onClick={() => navigate('/producer/products/create')}>
+        + Ajouter un produit
+      </button>
+      
+      {products.map(product => (
+        <div key={product.id}> 
+          <h3>{product.name}</h3>
+          <button onClick={() => navigate(`/producer/products/edit/${product.id}`)}>
+            ✏️ Modifier
+          </button>
+          <button onClick={() => handleDelete(product.id)}>
+            🗑️ Supprimer
+          </button>
+        </div>
+      ))}
     </div>
   );
 }
