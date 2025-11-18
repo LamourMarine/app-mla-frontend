@@ -66,7 +66,9 @@ const login = async (newToken: string) => {
     const res = await api.get("/users/me", {
       headers: { Authorization: `Bearer ${newToken}` },
     });
-
+    
+    console.log("Réponse /users/me:", res.data); // ← Regarde ça !
+    console.log("Roles reçus:", res.data.roles); // ← Et ça 
     setUser({
       id: res.data.id,
       name: res.data.name,

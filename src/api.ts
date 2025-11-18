@@ -146,7 +146,7 @@ export const authAPI = {
 };
 
 export const producerAPI = {
-  getAll: async () => {
+  getAll: async () => { 
     const response = await api.get('/producers');
     return response.data;
   },
@@ -156,9 +156,19 @@ export const producerAPI = {
     return response.data;
   },
 
-  delete: (id: number) => 
+  deactivate: (id: number) => 
+    api.patch(`/producers/${id}/deactivate`),
+  
+  activate: (id: number) => 
+    api.patch(`/producers/${id}/activate`),
+  
+  getDeactivated: () => 
+    api.get('/producers/deactivated'),
+  
+  // Suppression définitive (si vraiment nécessaire)
+  permanentDelete: (id: number) => 
     api.delete(`/producers/${id}`),
-};
+}
 
 // ==================== PRODUITS ====================
 

@@ -2,7 +2,7 @@
 export interface Product {
   id: number;
   name: string;
-  descriptionProduct: string;
+  description: string;
   imageProduct: string;
   isBio: boolean;
   price: number;
@@ -24,9 +24,10 @@ export interface Product {
 export type ProductPayload = {
   name: string;
   price: number; // String car DECIMAL backend
+  description_Product: string;
   categoryId: number;
   unitId: number;
   isBio: boolean;
   availability: boolean;
-  image?: File | string;
+  image_Product?: string | null;
 };
