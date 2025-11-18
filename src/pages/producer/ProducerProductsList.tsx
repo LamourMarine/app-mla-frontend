@@ -61,9 +61,9 @@ return (
               </div>
 
               {/* Description courte */}
-              {product.description && (
+              {product.description_Product && (
                 <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                  {product.description}
+                  {product.description_Product}
                 </p>
               )}
 

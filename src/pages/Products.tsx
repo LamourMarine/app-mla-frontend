@@ -4,7 +4,7 @@ import { productAPI } from '../api';
 import type { Product } from '../Types/product';
 import ProductCard from '../components/ProductCard';
 
-function Products() {
+export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [activeTab, setActiveTab] = useState('Fruits');
@@ -34,60 +34,66 @@ function Products() {
   if (error) return <div className="error text-center p-8 text-red-600">{error}</div>;
 
   return (
-    <div className="products-page flex flex-col items-center w-full px-4 py-8">
-      {/* TABS */}
-      <div className="tabs flex gap-4 mb-8 mt-8 flex-wrap justify-center">
+    <div className="products-page max-w-7xl mx-auto px-4 py-8">
+      {/* TABS épurés */}
+      <div className="flex gap-2 mb-8 mt-8 justify-center border-b border-gray-200">
         <button
           onClick={() => setActiveTab('Fruits')}
-          className={`px-6 py-2 rounded-lg transition-all font-semibold ${
+          className={`px-6 py-3 font-medium transition-all relative ${
             activeTab === 'Fruits' 
-              ? 'bg-gradient-to-r from-orange-400 to-red-400 text-white shadow-lg transform scale-105' 
-              : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
+              ? 'text-gray-900' 
+              : 'text-gray-500 hover:text-gray-700'
           }`}
         >
           🍎 Fruits
+          {activeTab === 'Fruits' && (
+            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
+          )}
         </button>
+        
         <button
           onClick={() => setActiveTab('Légumes')}
-          className={`px-6 py-2 rounded-lg transition-all font-semibold ${
+          className={`px-6 py-3 font-medium transition-all relative ${
             activeTab === 'Légumes' 
-              ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white shadow-lg transform scale-105' 
-              : 'bg-green-100 text-green-700 hover:bg-green-200'
+              ? 'text-gray-900' 
+              : 'text-gray-500 hover:text-gray-700'
           }`}
         >
           🥕 Légumes
+          {activeTab === 'Légumes' && (
+            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
+          )}
         </button>
+        
         <button
           onClick={() => setActiveTab('Produits laitiers')}
-          className={`px-6 py-2 rounded-lg transition-all font-semibold ${
+          className={`px-6 py-3 font-medium transition-all relative ${
             activeTab === 'Produits laitiers' 
-              ? 'bg-gradient-to-r from-blue-400 to-indigo-400 text-white shadow-lg transform scale-105' 
-              : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+              ? 'text-gray-900' 
+              : 'text-gray-500 hover:text-gray-700'
           }`}
         >
           🧀 Produits laitiers
+          {activeTab === 'Produits laitiers' && (
+            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
+          )}
         </button>
       </div>
-
+      
       {/* GRILLE DE PRODUITS */}
-      <div className="product-grid flex flex-wrap gap-6 justify-center max-w-7xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProducts.length === 0 ? (
-          <p className="no-products text-gray-500 text-center w-full py-8">
-            Aucun produit disponible dans cette catégorie
-          </p>
+          <div className="col-span-full text-center py-16">
+            <p className="text-gray-500 text-lg">
+              Aucun produit disponible dans cette catégorie
+            </p>
+          </div>
         ) : (
           filteredProducts.map(product => (
-            <div 
-              key={product.id}
-              className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)]"
-            >
-              <ProductCard product={product} />
-            </div>
+            <ProductCard key={product.id} product={product} />
           ))
         )}
       </div>
     </div>
   );
 }
-
-export default Products;
