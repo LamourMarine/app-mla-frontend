@@ -18,8 +18,8 @@ function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
-      {/* Image avec overlay au hover */}
-      <div className="relative h-56 bg-gray-50 overflow-hidden">
+      {/* Image avec overlay au hover - Plus petite */}
+      <div className="relative h-40 bg-gray-50 overflow-hidden">
         <img
           src={imageUrl}
           alt={product.name}
@@ -29,18 +29,18 @@ function ProductCard({ product }: ProductCardProps) {
         {/* Bouton Ajouter au panier - apparaît au hover */}
         {product.availability && (
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <button className="px-6 py-3 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-200 transform translate-y-2 group-hover:translate-y-0">
+            <button className="px-4 py-2 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-200 transform translate-y-2 group-hover:translate-y-0 text-sm">
               🛒 Ajouter au panier
             </button>
           </div>
         )}
       </div>
 
-      {/* Contenu */}
-      <div className="p-5">
+      {/* Contenu - Plus compact */}
+      <div className="p-4">
         {/* Header : Nom + Badge Bio */}
-        <div className="flex items-start justify-between gap-2 mb-3">
-          <h3 className="text-lg font-semibold text-gray-900 leading-tight flex-1">
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 className="text-base font-semibold text-gray-900 leading-tight flex-1">
             {product.name}
           </h3>
           {product.isBio && (
@@ -51,17 +51,17 @@ function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+        <p className="text-sm text-gray-600 mb-3 line-clamp-2 leading-relaxed">
           {product.description_Product}
         </p>
 
         {/* Prix */}
-        <div className="mb-4">
+        <div className="mb-3">
           <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-bold text-gray-900">
+            <span className="text-xl font-bold text-gray-900">
               {product.price}€
             </span>
-            <span className="text-sm text-gray-500">
+            <span className="text-xs text-gray-500">
               / {product.unit?.name ?? "unité"}
             </span>
           </div>
@@ -69,16 +69,16 @@ function ProductCard({ product }: ProductCardProps) {
 
         {/* Statut disponibilité */}
         {!product.availability && (
-          <div className="mb-4 px-3 py-2 bg-red-50 border border-red-200 rounded-lg">
-            <span className="text-sm text-red-600 font-medium">
+          <div className="mb-3 px-2 py-1.5 bg-red-50 border border-red-200 rounded-lg">
+            <span className="text-xs text-red-600 font-medium">
               ❌ Rupture de stock
             </span>
           </div>
         )}
 
         {/* Producteur */}
-        <div className="pt-4 border-t border-gray-100">
-          <p className="text-sm text-gray-500">
+        <div className="pt-3 border-t border-gray-100">
+          <p className="text-xs text-gray-500">
             👨‍🌾 {product.seller?.name ?? "Producteur"}
           </p>
         </div>

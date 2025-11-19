@@ -258,24 +258,6 @@ function Home() {
           </div>
         </div>
       </section>
-
-      {/* CTA FINAL */}
-      <section className="py-20 px-4 bg-[#002A22] text-white text-center">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Prêt à transformer votre cantine ?
-          </h2>
-          <p className="text-xl mb-8 text-green-50">
-            Rejoignez les dizaines d'établissements qui font confiance au local
-          </p>
-          <button
-            onClick={() => navigate("/register")}
-            className="cursor-pointer bg-white text-[#002A22] px-10 py-5 rounded-lg font-bold text-xl hover:bg-yellow-100 transition-all shadow-2xl hover:shadow-3xl transform hover:scale-105"
-          >
-            🚀 Commencer maintenant
-          </button>
-        </div>
-      </section>
     </div>
   );
 }
