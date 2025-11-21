@@ -12,6 +12,7 @@ import ProductCreatePage from './pages/producer/ProductCreatePage';
 import { ProductEditPage } from './pages/producer/ProductEditPage';
 import { AdminRoute } from './components/AdminRoute';
 import  AdminDashboard  from "./pages/AdminDashboard";
+import Cart from './pages/Cart';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/producer/products/create" element={<ProductCreatePage />} />
         <Route path="/producer/products/edit/:id" element={<ProductEditPage />} />
         <Route path="/admin" element={<AdminRoute> <AdminDashboard /> </AdminRoute>} />
+        <Route path="/cart" element={<Cart />} /> 
 
       </Routes>
       </Layout>

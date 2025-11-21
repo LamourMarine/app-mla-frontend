@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../store/hooks";
 
 interface NavbarProps {
   logo: string;
@@ -19,6 +20,8 @@ const Navbar = ({ logo }: NavbarProps) => {
   } = useContext(AuthContext);
 
   const [isOpen, setIsOpen] = useState(false);
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   if (loading) {
     return (
@@ -35,17 +38,13 @@ const Navbar = ({ logo }: NavbarProps) => {
     navigate("/");
     setIsOpen(false);
   };
-return (
+  return (
     <nav className="bg-[#002A22] sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo + Nom */}
           <div className="flex items-center gap-4">
-            <img
-              src={logo}
-              alt="Cantine Verte"
-              className="w-12 h-10"
-            />
+            <img src={logo} alt="Cantine Verte" className="w-12 h-10" />
             <p className="text-emerald-400 font-bold text-xl italic">
               Cantine Verte
             </p>
@@ -77,9 +76,9 @@ return (
                 Producteurs
               </Link>
             </li>
-            
+
             {/* Visible seulement si producteur connecté */}
-            {user?.roles?.includes('ROLE_PRODUCTEUR') && (
+            {user?.roles?.includes("ROLE_PRODUCTEUR") && (
               <li>
                 <Link
                   to="/producer/products"
@@ -110,6 +109,20 @@ return (
                 </Link>
               </li>
             )}
+
+            <li className="relative">
+              <Link
+                to="/cart"
+                className="text-white hover:text-emerald-400 font-medium transition-colors flex items-center gap-1"
+              >
+                🛒 Panier
+                {totalItems > 0 && (
+                  <span className="bg-emerald-400 text-[#002A22] text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </Link>
+            </li>
 
             {/* Séparateur visuel */}
             <div className="h-6 w-px bg-white/20 mx-2" />
@@ -195,7 +208,7 @@ return (
               </Link>
             </li>
 
-            {user?.roles?.includes('ROLE_PRODUCTEUR') && (
+            {user?.roles?.includes("ROLE_PRODUCTEUR") && (
               <li>
                 <Link
                   to="/producer/products"

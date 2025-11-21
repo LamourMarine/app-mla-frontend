@@ -1,20 +1,39 @@
 // src/components/ProductCard.tsx
 import type { Product } from "../Types/product";
 import { ASSETS_BASE_URL } from "../api";
+import { useState } from "react";
+import { addItem } from "../store/cartSlice";
+import { useAppDispatch } from "../store/hooks";
+import Toast from "./Toast";
 
 interface ProductCardProps {
   product: Product;
 }
 
 function ProductCard({ product }: ProductCardProps) {
+  const [quantity, setQuantity] = useState(1);
+  const dispatch = useAppDispatch();
+  const [showToast, setShowToast] = useState(false);
   const imagePath =
     product.imageProduct ||
     (product as any).image_Product ||
     "/images/default.jpg";
-  
+
   const imageUrl = imagePath.startsWith("/")
     ? `${ASSETS_BASE_URL}${imagePath}`
     : imagePath;
+
+  const handleAddToCart = () => {
+    dispatch(
+      addItem({
+        productId: product.id,
+        quantity: quantity,
+      })
+    );
+    console.log("Produit ajouté:", product.id, "quantité:", quantity);
+    setQuantity(1);
+    setShowToast(true);
+  };
 
   return (
     <div className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
@@ -25,15 +44,6 @@ function ProductCard({ product }: ProductCardProps) {
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
         />
-        
-        {/* Bouton Ajouter au panier - apparaît au hover */}
-        {product.availability && (
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <button className="px-4 py-2 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-200 transform translate-y-2 group-hover:translate-y-0 text-sm">
-              🛒 Ajouter au panier
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Contenu - Plus compact */}
@@ -82,7 +92,33 @@ function ProductCard({ product }: ProductCardProps) {
             👨‍🌾 {product.seller?.name ?? "Producteur"}
           </p>
         </div>
+
+        {/* Input + Bouton Ajouter (seulement si disponible) */}
+        {product.availability && (
+          <div className="flex items-center gap-2 mt-3">
+            <input
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm"
+            />
+            <span className="text-xs text-gray-600">{product.unit?.name}</span>
+            <button
+              onClick={handleAddToCart}
+              className="flex-1 px-3 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+            >
+              🛒 Ajouter
+            </button>
+          </div>
+        )}
       </div>
+      {showToast && (
+        <Toast
+          message={`${product.name} ajouté au panier`}
+          onClose={() => setShowToast(false)}
+        />
+      )}
     </div>
   );
 }
