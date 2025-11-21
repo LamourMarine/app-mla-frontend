@@ -192,7 +192,7 @@ export const productAPI = {
   },
 
   // Créer un produit (producteur uniquement)
-  create: async (productData: ProductPayload) => {
+  create: async (productData: ProductPayload | FormData) => {
     const response = await api.post<Product>('/products', productData);
     return response.data;
   },

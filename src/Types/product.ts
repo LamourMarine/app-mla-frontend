@@ -29,5 +29,5 @@ export type ProductPayload = {
   unitId: number;
   isBio: boolean;
   availability: boolean;
-  image_Product?: string | null;
+  image_Product?: File | null;
 };

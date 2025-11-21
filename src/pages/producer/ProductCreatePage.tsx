@@ -39,22 +39,30 @@ export default function ProductCreatePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const payload: ProductPayload = {
-      ...form,
-      price: parseFloat(form.price.toString()),
-    };
-    console.log("Data envoyée:", payload);
+      const formData = new FormData();
+  formData.append('name', form.name);
+  formData.append('description_Product', form.description_Product);
+  formData.append('price', form.price.toString());
+  formData.append('categoryId', form.categoryId.toString());
+  formData.append('unitId', form.unitId.toString());
+  formData.append('isBio', form.isBio.toString());
+  formData.append('availability', form.availability.toString());
 
-    try {
-      const newProduct = await productAPI.create(payload); // Recupere le produit créé
-      dispatch(addProduct(newProduct)); //Ajoute au store redux
-      navigate("/producer/products");
-    } catch (error) {
-      console.error("Erreur complète:", error);
-      alert("Erreur lors de la création");
-    }
-  };
+  if (form.image_Product) {
+    formData.append('image_Product', form.image_Product);
+  }
+  console.log("FormData créé avec image:", form.image_Product?.name);
 
+
+try {
+    const newProduct = await productAPI.create(formData);
+    dispatch(addProduct(newProduct));
+    navigate("/producer/products");
+  } catch (error) {
+    console.error("Erreur complète:", error);
+    alert("Erreur lors de la création");
+  }
+};
   return (
     <form onSubmit={handleSubmit}>
       <h1>Créer un produit</h1>
@@ -85,7 +93,10 @@ export default function ProductCreatePage() {
       <input
         type="file"
         onChange={(e) => {
-          /* gestion upload image */
+          const file = e.target.files?.[0];
+          if (file) {
+            setForm({ ...form, image_Product: file})
+          }
         }}
         accept="image/*"
       />
