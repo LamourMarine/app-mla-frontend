@@ -15,9 +15,6 @@ console.log('API_BASE_URL finale:', API_BASE_URL);
 // Créer l'instance Axios
 export const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
   timeout: 10000,
 });
 
@@ -198,8 +195,8 @@ export const productAPI = {
   },
 
   // Modifier un produit
-  update: async (id: number, data: ProductPayload) => {
-    const response = await api.put<Product>(`/products/${id}`, data);
+  update: async (id: number, data: ProductPayload | FormData) => {
+    const response = await api.post<Product>(`/products/${id}`, data);
     return response.data;
   },
 

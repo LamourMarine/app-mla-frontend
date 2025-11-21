@@ -22,6 +22,7 @@ function ProductCard({ product }: ProductCardProps) {
   const imageUrl = imagePath.startsWith("/")
     ? `${ASSETS_BASE_URL}${imagePath}`
     : imagePath;
+    console.log('Image URL:', imageUrl);
 
   const handleAddToCart = () => {
     dispatch(

@@ -62,16 +62,41 @@ export const ProductEditPage = () => {
     e.preventDefault();
     if (!id) return;
 
+    const formData = new FormData();
+        // Envoyer les données structurées en JSON
+    const productData = {
+      name: form.name,
+      description_Product: form.description_Product,
+      price: parseFloat(form.price.toString()), // Float
+      categoryId: form.categoryId,
+      unitId: form.unitId,
+      isBio: form.isBio,
+      availability: form.availability,
+    };
+
+    formData.append("data", JSON.stringify(productData)); // JSON avec les bons types
+    // Ajouter l'image séparément
+    if (form.image_Product && form.image_Product instanceof File) {
+      console.log(
+        "Ajout du fichier:",
+        form.image_Product.name,
+        form.image_Product.size
+      );
+      formData.append("image_Product", form.image_Product);
+    } else {
+      console.log("Pas de fichier valide");
+    }
+    console.log("=== DEBUG FormData ===");
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    console.log("JSON data:", JSON.stringify(productData));
+    console.log("======================");
+
+    console.log("FormData créé avec image:", form.image_Product?.name);
+
     try {
-      const response = await api.put(`/products/${Number(id)}`, {
-        name: form.name,
-        price: Number(form.price),
-        description_Product: form.description_Product, 
-        categoryId: form.categoryId, 
-        unitId: form.unitId,
-        isBio: form.isBio,
-        availability: form.availability,
-      });
+      const response = await api.post(`/products/${Number(id)}`, formData);
 
       dispatch(updateProduct(response.data));
 
@@ -126,38 +151,39 @@ return (
           />
         </div>
 
-        {/* Image */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Image du produit
-          </label>
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
-            <input
-              type="file"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                console.log("Fichier sélectionné:", file);
-                // TODO: gérer l'upload plus tard
-              }}
-              accept="image/*"
-              className="hidden"
-              id="file-upload"
-            />
-            <label 
-              htmlFor="file-upload"
-              className="cursor-pointer flex flex-col items-center gap-2"
-            >
-              <span className="text-4xl">📷</span>
-              <span className="text-sm text-gray-600">
-                Cliquez pour choisir une image
-              </span>
-              <span className="text-xs text-gray-500">
-                PNG, JPG jusqu'à 5MB
-              </span>
-            </label>
-          </div>
-        </div>
-
+{/* Image */}
+<div>
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Image du produit
+  </label>
+  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+    <input
+      type="file"
+      onChange={(e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+          console.log("Fichier sélectionné:", file);
+          setForm({ ...form, image_Product: file });
+        }
+      }}
+      accept="image/*"
+      className="hidden"
+      id="file-upload"
+    />
+    <label 
+      htmlFor="file-upload"
+      className="cursor-pointer flex flex-col items-center gap-2"
+    >
+      <span className="text-4xl">📷</span>
+      <span className="text-sm text-gray-600">
+        Cliquez pour choisir une image
+      </span>
+      <span className="text-xs text-gray-500">
+        PNG, JPG jusqu'à 5MB
+      </span>
+    </label>
+  </div>
+</div>
         {/* Prix et Catégorie (côte à côte) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Prix */}
