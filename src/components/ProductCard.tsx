@@ -4,6 +4,7 @@ import { ASSETS_BASE_URL } from "../api";
 import { useState } from "react";
 import { addItem } from "../store/cartSlice";
 import { useAppDispatch } from "../store/hooks";
+import Toast from "./Toast";
 
 interface ProductCardProps {
   product: Product;
@@ -12,6 +13,7 @@ interface ProductCardProps {
 function ProductCard({ product }: ProductCardProps) {
   const [quantity, setQuantity] = useState(1);
   const dispatch = useAppDispatch();
+  const [showToast, setShowToast] = useState(false);
   const imagePath =
     product.imageProduct ||
     (product as any).image_Product ||
@@ -20,6 +22,18 @@ function ProductCard({ product }: ProductCardProps) {
   const imageUrl = imagePath.startsWith("/")
     ? `${ASSETS_BASE_URL}${imagePath}`
     : imagePath;
+
+  const handleAddToCart = () => {
+    dispatch(
+      addItem({
+        productId: product.id,
+        quantity: quantity,
+      })
+    );
+    console.log("Produit ajouté:", product.id, "quantité:", quantity);
+    setQuantity(1);
+    setShowToast(true);
+  };
 
   return (
     <div className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
@@ -91,16 +105,7 @@ function ProductCard({ product }: ProductCardProps) {
             />
             <span className="text-xs text-gray-600">{product.unit?.name}</span>
             <button
-              onClick={() => {
-                dispatch(
-                  addItem({
-                    productId: product.id,
-                    quantity: quantity,
-                  })
-                );
-                console.log('Produit ajouté:', product.id, 'quantité:', quantity);
-                setQuantity(1);
-              }}
+              onClick={handleAddToCart}
               className="flex-1 px-3 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
             >
               🛒 Ajouter
@@ -108,6 +113,12 @@ function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
       </div>
+      {showToast && (
+        <Toast
+          message={`${product.name} ajouté au panier`}
+          onClose={() => setShowToast(false)}
+        />
+      )}
     </div>
   );
 }

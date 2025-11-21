@@ -1,13 +1,15 @@
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { useEffect } from "react";
 import { fetchProducts } from "../store/productsSlice";
-import { removeItem, updateQuantity } from "../store/cartSlice";
+import { useNavigate } from "react-router-dom";
+import CartItem from "../components/CartItem";
 
 const Cart = () => {
   const cartItems = useAppSelector((state) => state.cart.items);
   const allProducts = useAppSelector((state) => state.product.products);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const totalGeneral = cartItems.reduce((sum, cartItem) => {
     const product = allProducts.find((p) => p.id === cartItem.productId);
     if (!product) return sum;
@@ -25,82 +27,28 @@ const Cart = () => {
       {cartItems.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-xl text-gray-500 mb-4">Votre panier est vide</p>
-          <p className="text-gray-400">
+          <p className="text-gray-400 mb-6">
             Ajoutez des produits pour commencer votre commande
           </p>
+          <button
+            onClick={() => navigate("/products")}
+            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          >
+            Découvrir nos produits
+          </button>
         </div>
       ) : (
         <>
           {cartItems.map((cartItem) => {
-            const product = allProducts.find(
-              (p) => p.id === cartItem.productId
-            );
+            const product = allProducts.find((p) => p.id === cartItem.productId);
             if (!product) return null;
-            const lineTotal = product.price * cartItem.quantity;
 
             return (
-              <div
+              <CartItem
                 key={cartItem.productId}
-                className="border p-4 mb-4 flex justify-between items-center gap-4"
-              >
-                {/* Informations produit - GAUCHE */}
-                <div className="flex-1">
-                  <p className="font-semibold">{product.name}</p>
-                  <p className="text-sm text-gray-600">
-                    {product.price}€ l'unité
-                  </p>
-                </div>
-
-                {/* Gestion quantité - CENTRE */}
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() =>
-                      dispatch(
-                        updateQuantity({
-                          productId: cartItem.productId,
-                          quantity: cartItem.quantity - 1,
-                        })
-                      )
-                    }
-                    disabled={cartItem.quantity <= 1}
-                    className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-                  >
-                    −
-                  </button>
-
-                  <span className="font-medium w-8 text-center">
-                    {cartItem.quantity}
-                  </span>
-
-                  <button
-                    onClick={() =>
-                      dispatch(
-                        updateQuantity({
-                          productId: cartItem.productId,
-                          quantity: cartItem.quantity + 1,
-                        })
-                      )
-                    }
-                    className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                  >
-                    +
-                  </button>
-                </div>
-
-                {/* Total ligne + Supprimer - DROITE */}
-                <div className="flex items-center gap-4">
-                  <p className="font-semibold text-lg">
-                    {lineTotal.toFixed(2)}€
-                  </p>
-
-                  <button
-                    onClick={() => dispatch(removeItem(cartItem.productId))}
-                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                  >
-                    🗑️
-                  </button>
-                </div>
-              </div>
+                product={product}
+                quantity={cartItem.quantity}
+              />
             );
           })}
 
@@ -110,9 +58,22 @@ const Cart = () => {
               <span>{totalGeneral.toFixed(2)}€</span>
             </div>
           </div>
+
+          <div className="flex gap-4 mt-6">
+            <button
+              onClick={() => navigate("/products")}
+              className="flex-1 px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+            >
+              Continuer mes achats
+            </button>
+            <button className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+              Valider la commande
+            </button>
+          </div>
         </>
       )}
     </div>
   );
 };
+
 export default Cart;
