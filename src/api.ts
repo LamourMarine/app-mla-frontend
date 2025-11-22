@@ -238,6 +238,15 @@ export const categoryAPI = {
   },
 };
 
+// ==================== UNITÉS ====================
+
+export const unitAPI = {
+  getAll: async () => {
+    const response = await api.get('/units');
+    return response.data;
+  }
+}
+
 // ==================== UTILITAIRES ====================
 
 // Décoder le token JWT
