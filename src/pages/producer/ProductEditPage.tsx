@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../../api";
 import type { ProductPayload } from "../../Types/product";
-import { productAPI, categoryAPI } from "../../api";
+import { productAPI, categoryAPI, unitAPI } from "../../api";
 import type { Category } from "../../Types/category";
 import { useAppDispatch } from "../../store/hooks";
 import { updateProduct } from "../../store/productsSlice";
+import type { Unit } from "../../Types/unit";
 
 
 
@@ -15,6 +16,7 @@ export const ProductEditPage = () => {
   const dispatch = useAppDispatch();
 
   const [categories, setCategories] = useState<Category[]>([]);
+  const [units, setUnits] = useState<Unit[]>([]);
 
   const [form, setForm] = useState<ProductPayload>({
     name: "",
@@ -39,6 +41,21 @@ export const ProductEditPage = () => {
 
     loadCategories();
   }, []);
+
+    useEffect(() => {
+      const loadUnits = async () => {
+        try {
+          const units = await unitAPI.getAll();
+          console.log("Unités reçues:", units);
+          setUnits(units);
+        } catch (error) {
+          console.error('Erreur:', error);
+        }
+      };
+  
+      loadUnits();
+    }, []);
+  
 
   useEffect(() => {
     if (!id) return; // Sécurité
@@ -184,8 +201,8 @@ return (
     </label>
   </div>
 </div>
-        {/* Prix et Catégorie (côte à côte) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Prix catégorie et unité sur la même ligne */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Prix */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -224,6 +241,29 @@ return (
               ))}
             </select>
           </div>
+
+                    {/* Unité */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Unité *
+            </label>
+            <select
+              value={form.unitId || ""}
+              onChange={(e) =>
+                setForm({ ...form, unitId: Number(e.target.value) })
+              }
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all bg-white"
+            >
+              <option value="">Choisir une unité</option>
+              {units?.map((unit) => (
+                <option key={unit.id} value={unit.id}>
+                  {unit.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
         </div>
 
         {/* Options (checkboxes) */}

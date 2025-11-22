@@ -1,20 +1,22 @@
 import { useState, useEffect } from "react";
-import { categoryAPI, productAPI } from "../../api";
+import { categoryAPI, productAPI, unitAPI } from "../../api";
 import { useNavigate } from "react-router-dom";
 import type { ProductPayload } from "../../Types/product";
 import type { Category } from "../../Types/category";
 import { useAppDispatch } from "../../store/hooks";
 import { addProduct } from "../../store/productsSlice";
+import type { Unit } from "../../Types/unit";
 
 export default function ProductCreatePage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [categories, setCategories] = useState<Category[]>([]);
+  const [units, setUnits] = useState<Unit[]>([]);
 
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const categories = await categoryAPI.getAll(); // ← Directement les données
+        const categories = await categoryAPI.getAll();
         console.log("Categories reçues:", categories);
         setCategories(categories);
       } catch (error) {
@@ -23,6 +25,20 @@ export default function ProductCreatePage() {
     };
 
     loadCategories();
+  }, []);
+
+  useEffect(() => {
+    const loadUnits = async () => {
+      try {
+        const units = await unitAPI.getAll();
+        console.log("Unités reçues:", units);
+        setUnits(units);
+      } catch (error) {
+        console.error('Erreur:', error);
+      }
+    };
+
+    loadUnits();
   }, []);
 
   const [form, setForm] = useState<ProductPayload>({
@@ -132,8 +148,8 @@ export default function ProductCreatePage() {
           />
         </div>
 
-        {/* Prix et Catégorie sur la même ligne */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        {/* Prix catégorie et unité sur la même ligne */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           {/* Prix */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -174,7 +190,32 @@ export default function ProductCreatePage() {
               ))}
             </select>
           </div>
+
+          {/* Unité */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Unité *
+            </label>
+            <select
+              value={form.unitId || ""}
+              onChange={(e) =>
+                setForm({ ...form, unitId: Number(e.target.value) })
+              }
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all bg-white"
+            >
+              <option value="">Choisir une unité</option>
+              {units?.map((unit) => (
+                <option key={unit.id} value={unit.id}>
+                  {unit.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
         </div>
+
+        
 
         {/* Image */}
         <div className="mb-6">
