@@ -48,37 +48,42 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const dispatch = useAppDispatch();
 
   // Charge au montage initial
-useEffect(() => {
-  if (!token) {
-    setLoading(false);
-    return;
-  }
+  useEffect(() => {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
-  api
-    .get("/users/me")
-    .then((res) => {
-      setUser(res.data);
-      
-      // Charger le panier après avoir récupéré l'utilisateur
-      const savedCart = localStorage.getItem(`cart_${res.data.id}`);
-      if (savedCart) {
-        try {
-          const cartData = JSON.parse(savedCart);
-          if (cartData && Array.isArray(cartData.items)) {
-            dispatch(loadCart({ items: cartData.items }));
-            console.log("Panier rechargé au démarrage pour user", res.data.id);
+    api
+      .get("/users/me")
+      .then((res) => {
+        setUser(res.data);
+
+        // Charger le panier après avoir récupéré l'utilisateur
+        const savedCart = localStorage.getItem(`cart_${res.data.id}`);
+        if (savedCart) {
+          try {
+            const cartData = JSON.parse(savedCart);
+            if (cartData && Array.isArray(cartData.items)) {
+              setLoadingCart(true);
+              dispatch(loadCart({ items: cartData.items }));
+              setTimeout(() => setLoadingCart(false), 100);
+              console.log(
+                "Panier rechargé au démarrage pour user",
+                res.data.id
+              );
+            }
+          } catch (error) {
+            console.error("Erreur chargement panier:", error);
           }
-        } catch (error) {
-          console.error("Erreur chargement panier:", error);
         }
-      }
-    })
-    .catch(() => {
-      setToken(null);
-      localStorage.removeItem("token");
-    })
-    .finally(() => setLoading(false));
-}, []);
+      })
+      .catch(() => {
+        setToken(null);
+        localStorage.removeItem("token");
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   const login = async (newToken: string) => {
     localStorage.setItem("token", newToken);
@@ -134,6 +139,9 @@ useEffect(() => {
   };
 
   const logout = () => {
+    setLoadingCart(true);
+    dispatch(clearCart());
+    setTimeout(() => setLoadingCart(false), 100);
     localStorage.removeItem("token");
     setToken(null);
     setUser(null);
