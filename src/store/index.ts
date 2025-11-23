@@ -3,16 +3,11 @@ import producerReducer from "./producerSlice";
 import productReducer from "./productsSlice";
 import cartReducer from "./cartSlice";
 
-const loadCartFromStorage = () => {
-  try {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      return JSON.parse(savedCart)
-    }
-  } catch (error) {
-    console.error('Erreur chargement panier:', error);
-  }
-  return { items: [], loading: false, error: null };
+// ✅ Variable pour bloquer la sauvegarde pendant le chargement
+let isLoadingCart = false;
+
+export const setLoadingCart = (loading: boolean) => {
+  isLoadingCart = loading;
 };
 
 export const store = configureStore({
@@ -21,18 +16,31 @@ export const store = configureStore({
     product: productReducer,
     cart: cartReducer,
   },
-  preloadedState: {
-    cart: loadCartFromStorage(), // charge le panier
-  }
 });
 
+// Subscribe pour sauvegarder automatiquement le panier
 store.subscribe(() => {
+  // ✅ Ne pas sauvegarder si on est en train de charger
+  if (isLoadingCart) {
+    console.log("⏸️ Sauvegarde ignorée (chargement en cours)");
+    return;
+  }
+
   const state = store.getState();
 
   try {
-    localStorage.setItem('cart', JSON.stringify(state.cart));
+    // Récupérer l'utilisateur connecté
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      const userId = user.id;
+      
+      // Sauvegarder le panier avec la clé spécifique à l'utilisateur
+      localStorage.setItem(`cart_${userId}`, JSON.stringify(state.cart));
+      console.log(`💾 Panier sauvegardé pour user ${userId}`);
+    }
   } catch (error) {
-    console.error('Erreur sauvegarde panier:', error);
+    console.error("❌ Erreur sauvegarde panier:", error);
   }
 });
 

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
+
 //Item dans le panier
 interface CartItem {
   productId: number;
@@ -46,6 +47,9 @@ export const cartSlice = createSlice({
             item.quantity = action.payload.quantity;
         }
     },
+    loadCart: (state, action: PayloadAction<{ items: CartItem[] }>) => {
+      state.items = action.payload.items;
+    },
     clearCart: (state) => {
         state.items = [];
     }
@@ -56,6 +60,7 @@ export const {
     addItem,
     removeItem,
     updateQuantity,
+    loadCart,
     clearCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;

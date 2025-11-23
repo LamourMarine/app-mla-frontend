@@ -110,19 +110,21 @@ const Navbar = ({ logo }: NavbarProps) => {
               </li>
             )}
 
-            <li className="relative">
-              <Link
-                to="/cart"
-                className="text-white hover:text-emerald-400 font-medium transition-colors flex items-center gap-1"
-              >
-                🛒 Panier
-                {totalItems > 0 && (
-                  <span className="bg-emerald-400 text-[#002A22] text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    {totalItems}
-                  </span>
-                )}
-              </Link>
-            </li>
+            {isAuthenticated && (
+              <li className="relative">
+                <Link
+                  to="/cart"
+                  className="text-white hover:text-emerald-400 font-medium transition-colors flex items-center gap-1"
+                >
+                  🛒 Panier
+                  {totalItems > 0 && (
+                    <span className="bg-emerald-400 text-[#002A22] text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                      {totalItems}
+                    </span>
+                  )}
+                </Link>
+              </li>
+            )}
 
             {/* Séparateur visuel */}
             <div className="h-6 w-px bg-white/20 mx-2" />
@@ -165,6 +167,14 @@ const Navbar = ({ logo }: NavbarProps) => {
               </>
             )}
           </ul>
+
+          {/* Section droite mobile : User + Burger */}
+          <div className="flex items-center gap-4"></div>
+          {isAuthenticated && user && (
+            <span className="md:hidden text-emerald-400 font-medium text-sm">
+              🌿 {user.name}
+            </span>
+          )}
 
           {/* Burger menu mobile */}
           <button
@@ -256,7 +266,7 @@ const Navbar = ({ logo }: NavbarProps) => {
                       handleLogout();
                       setIsOpen(false);
                     }}
-                    className="w-full text-left px-4 py-2 bg-white text-[#002A22] rounded-lg font-medium hover:bg-emerald-50 transition-colors"
+                    className="w-full px-4 py-2 bg-white text-[#002A22] rounded-lg font-medium hover:bg-emerald-50 transition-colors text-center"
                   >
                     Déconnexion
                   </button>
