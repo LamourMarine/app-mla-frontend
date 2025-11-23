@@ -21,8 +21,8 @@ export default function Layout({ children, logo }: LayoutProps) {
       </header>
     
       <main
-        className={`flex-1 mt-20 ${
-          location.pathname === "/" ? "px-0" : "px-4"
+        className={`flex-1 ${
+          location.pathname === "/" ? "px-0" : "mt-20 px-4"
         }`}
       >
         {children}
