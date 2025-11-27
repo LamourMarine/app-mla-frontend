@@ -129,7 +129,7 @@ const Navbar = ({ logo }: NavbarProps) => {
             {/* Séparateur visuel */}
             <div className="h-6 w-px bg-white/20 mx-2" />
 
-            {/* User info ou Auth buttons */}
+            {/* User info */}
             {isAuthenticated ? (
               <>
                 <li>
@@ -175,6 +175,22 @@ const Navbar = ({ logo }: NavbarProps) => {
               🌿 {user.name}
             </span>
           )}
+
+          {/* Panier mobile uniquement */}
+                      {isAuthenticated && (
+                <Link
+                  to="/cart"
+                  className="md:hidden text-white hover:text-emerald-400 font-medium transition-colors flex items-center gap-1"
+                >
+                  🛒
+                  {totalItems > 0 && (
+                    <span className="bg-emerald-400 text-[#002A22] text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                      {totalItems}
+                    </span>
+                  )}
+                </Link>
+            )}
+
 
           {/* Burger menu mobile */}
           <button
