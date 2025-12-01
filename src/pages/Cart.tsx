@@ -1,12 +1,16 @@
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchProducts } from "../store/productsSlice";
 import { useNavigate } from "react-router-dom";
 import CartItem from "../components/CartItem";
+import { orderAPI } from "../api";
+import { clearCart } from "../store/cartSlice";
+import toast from "react-hot-toast";
 
 const Cart = () => {
   const cartItems = useAppSelector((state) => state.cart.items);
   const allProducts = useAppSelector((state) => state.product.products);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -19,6 +23,47 @@ const Cart = () => {
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
+
+  const handleValidateOrder = async () => {
+    setIsSubmitting(true);
+
+    try {
+      // Préparer les données pour l'API
+      const orderData = {
+        items: cartItems.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+        })),
+      };
+
+      // Envoyer la commande
+      const response = await orderAPI.create(orderData);
+
+      // Vider le panier
+      dispatch(clearCart());
+
+      // Toast de succès
+      toast.success("Commande validée avec succès !", {
+        duration: 3000,
+      });
+
+      navigate("/order-confirmation", {
+        state: { order: response.order },
+      });
+    } catch (error: any) {
+      console.error("Erreur lors de la création de la commande:", error);
+
+      const errorMessage =
+        error.response?.data?.message ||
+        "Erreur lors de la création de la commande";
+      // Toast d'erreur
+      toast.error(errorMessage, {
+        duration: 5000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -40,7 +85,9 @@ const Cart = () => {
       ) : (
         <>
           {cartItems.map((cartItem) => {
-            const product = allProducts.find((p) => p.id === cartItem.productId);
+            const product = allProducts.find(
+              (p) => p.id === cartItem.productId
+            );
             if (!product) return null;
 
             return (
@@ -66,8 +113,12 @@ const Cart = () => {
             >
               Continuer mes achats
             </button>
-            <button className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-              Valider la commande
+            <button
+              onClick={handleValidateOrder}
+              disabled={isSubmitting}
+              className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? "Validation en cours..." : "Valider la commande"}
             </button>
           </div>
         </>

@@ -10,6 +10,8 @@ import {
   approveProducer,
   rejectProducer
 } from "../store/producerSlice";
+import toast from 'react-hot-toast';
+
 
 function AdminDashboard() {
   const activeProducers = useAppSelector((state) => state.producer.producers);
@@ -59,8 +61,9 @@ useEffect(() => {
     try {
       await producerAPI.deactivate(id);
       dispatch(deactivateProducer(id));
+      toast.success("Producteur désactivé");
     } catch (error) {
-      alert("Erreur");
+      toast.error("Erreur lors de la désactivation");
     }
   };
 
@@ -71,8 +74,9 @@ useEffect(() => {
     try {
       await producerAPI.activate(id);
       dispatch(reactivateProducer(id));
+      toast.success("Producteur réactivé");
     } catch (error) {
-      alert("Erreur");
+      toast.error("Erreur lors de la réactivation");
     }
   };
 
@@ -83,9 +87,9 @@ useEffect(() => {
     try {
       await producerAPI.approve(id);
       dispatch(approveProducer(id));
-      alert("Producteur approuvé avec succès !");
+      toast.success("Producteur approuvé avec succès !");
     } catch (error) {
-      alert("Erreur lors de l'approbation");
+      toast.error("Erreur lors de l'approbation");
     }
   };
 
@@ -96,9 +100,9 @@ useEffect(() => {
     try {
       await producerAPI.reject(id);
       dispatch(rejectProducer(id));
-      alert("Producteur rejeté");
+      toast.success("Producteur rejeté");
     } catch (error) {
-      alert("Erreur lors du rejet");
+      toast.error("Erreur lors du rejet");
     }
   };
 
