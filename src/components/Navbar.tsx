@@ -45,13 +45,12 @@ const Navbar = ({ logo }: NavbarProps) => {
           {/* Logo + Nom */}
           <div className="flex items-center gap-4">
             <img src={logo} alt="Cantine Verte" className="w-12 h-10" />
-            <p className="text-emerald-400 font-bold text-xl italic">
+            <p className="text-emerald-400 font-bold text-xl italic whitespace-nowrap">
               Cantine Verte
             </p>
           </div>
-
           {/* Menu Desktop */}
-          <ul className="hidden md:flex items-center gap-6">
+          <ul className="nav-show hiden items-center gap-4">
             <li>
               <Link
                 to="/"
@@ -168,43 +167,43 @@ const Navbar = ({ logo }: NavbarProps) => {
             )}
           </ul>
 
-          {/* Section droite mobile : User + Burger */}
-          <div className="flex items-center gap-4"></div>
-          {isAuthenticated && user && (
-            <span className="md:hidden text-emerald-400 font-medium text-sm">
-              🌿 {user.name}
-            </span>
-          )}
-
-          {/* Panier mobile uniquement */}
-                      {isAuthenticated && (
-                <Link
-                  to="/cart"
-                  className="md:hidden text-white hover:text-emerald-400 font-medium transition-colors flex items-center gap-1"
-                >
-                  🛒
-                  {totalItems > 0 && (
-                    <span className="bg-emerald-400 text-[#002A22] text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                      {totalItems}
-                    </span>
-                  )}
-                </Link>
+          {/* Section droite mobile : User + Panier + Burger */}
+          <div className="nav-hide flex items-center gap-4">
+            {isAuthenticated && user && (
+              <span className="text-emerald-400 font-medium text-sm">
+                🌿 {user.name}
+              </span>
             )}
 
+            {/* Panier mobile uniquement */}
+            {isAuthenticated && (
+              <Link
+                to="/cart"
+                className="text-white hover:text-emerald-400 font-medium transition-colors flex items-center gap-1"
+              >
+                🛒
+                {totalItems > 0 && (
+                  <span className="bg-emerald-400 text-[#002A22] text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </Link>
+            )}
 
-          {/* Burger menu mobile */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-white text-2xl focus:outline-none"
-          >
-            {isOpen ? "✕" : "☰"}
-          </button>
+            {/* Burger menu mobile */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-white text-2xl focus:outline-none"
+            >
+              {isOpen ? "✕" : "☰"}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Menu mobile déroulant */}
       {isOpen && (
-        <div className="md:hidden bg-[#002A22] border-t border-white/10">
+        <div className="nav-hide bg-[#002A22] border-t border-white/10">
           <ul className="px-4 py-4 space-y-3">
             <li>
               <Link

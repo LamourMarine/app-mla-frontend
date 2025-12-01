@@ -4,7 +4,7 @@ import { ASSETS_BASE_URL } from "../api";
 import { useState } from "react";
 import { addItem } from "../store/cartSlice";
 import { useAppDispatch } from "../store/hooks";
-import Toast from "./Toast";
+import toast from "react-hot-toast";
 
 interface ProductCardProps {
   product: Product;
@@ -13,7 +13,6 @@ interface ProductCardProps {
 function ProductCard({ product }: ProductCardProps) {
   const [quantity, setQuantity] = useState(1);
   const dispatch = useAppDispatch();
-  const [showToast, setShowToast] = useState(false);
   const imagePath =
     product.imageProduct ||
     (product as any).image_Product ||
@@ -32,8 +31,11 @@ function ProductCard({ product }: ProductCardProps) {
       })
     );
     console.log("Produit ajouté:", product.id, "quantité:", quantity);
+    toast.success(`${product.name} ajouté au panier`, {
+      icon: '🛒',
+      duration: 2000,
+    });
     setQuantity(1);
-    setShowToast(true);
   };
 
   return (
@@ -114,12 +116,6 @@ function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
       </div>
-      {showToast && (
-        <Toast
-          message={`${product.name} ajouté au panier`}
-          onClose={() => setShowToast(false)}
-        />
-      )}
     </div>
   );
 }

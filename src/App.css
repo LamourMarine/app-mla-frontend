@@ -41,3 +41,21 @@
 .read-the-docs {
   color: #888;
 }
+
+@media (min-width: 1220px) {
+  .nav-show {
+    display: flex !important;
+  }
+  .nav-hide {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1219px) {
+  .nav-show {
+    display: none !important;
+  }
+  .nav-hide {
+    display: flex !important;
+  }
+}
