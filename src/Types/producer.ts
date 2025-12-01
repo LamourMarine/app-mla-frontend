@@ -4,4 +4,5 @@ export interface Producer {
   photo: string | null;
   address: string;
   email: string;
+  phoneNumber: string;
 }

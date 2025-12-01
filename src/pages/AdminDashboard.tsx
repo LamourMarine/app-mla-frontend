@@ -1,28 +1,55 @@
 import { useState, useEffect } from "react";
 import { producerAPI } from "../api";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { fetchProducers, setDeactivatedProducers, deactivateProducer, reactivateProducer } from "../store/producerSlice";
-
+import { 
+  fetchProducers, 
+  setDeactivatedProducers, 
+  deactivateProducer, 
+  reactivateProducer,
+  setPendingProducers,
+  approveProducer,
+  rejectProducer
+} from "../store/producerSlice";
 
 function AdminDashboard() {
   const activeProducers = useAppSelector((state) => state.producer.producers);
   const deactivatedProducers = useAppSelector(
     (state) => state.producer.deactivatedProducers
   );
-  const [showDeactivated, setShowDeactivated] = useState(false);
-  const dispatch = useAppDispatch(); // Charge les producteurs actifs
+  const pendingProducers = useAppSelector(
+    (state) => state.producer.pendingProducers
+  );
+  
+  const [currentTab, setCurrentTab] = useState<'active' | 'deactivated' | 'pending'>('active');
+  const dispatch = useAppDispatch();
 
-
-
-  useEffect(() => {
-    dispatch(fetchProducers()); // thunk qui remplit le state global
+useEffect(() => {
+    dispatch(fetchProducers()); // Charge les producteurs actifs
+    
+    // Charge aussi les producteurs en attente
+    const loadPending = async () => {
+      try {
+        const { data } = await producerAPI.getPending();
+        dispatch(setPendingProducers(data.producers || []));
+      } catch (error) {
+        console.error("Erreur chargement pending:", error);
+      }
+    };
+    
+    loadPending();
   }, [dispatch]);
-
   // Charge les producteurs désactivés
   const loadDeactivated = async () => {
     const { data } = await producerAPI.getDeactivated();
     dispatch(setDeactivatedProducers(Array.isArray(data) ? data : []));
-    setShowDeactivated(true);
+    setCurrentTab('deactivated');
+  };
+
+  // Charge les producteurs en attente
+  const loadPending = async () => {
+    const { data } = await producerAPI.getPending();
+    dispatch(setPendingProducers(data.producers || []));
+    setCurrentTab('pending');
   };
 
   // Désactive un producteur
@@ -41,9 +68,6 @@ function AdminDashboard() {
   const handleActivate = async (id: number) => {
     if (!confirm("Voulez-vous réactiver ce producteur ?")) return;
 
-    const producerToActivate = deactivatedProducers.find(p => p.id === id);
-  if (!producerToActivate) return;
-
     try {
       await producerAPI.activate(id);
       dispatch(reactivateProducer(id));
@@ -51,7 +75,33 @@ function AdminDashboard() {
       alert("Erreur");
     }
   };
-      
+
+  // Approuver un producteur
+  const handleApprove = async (id: number) => {
+    if (!confirm("Approuver ce producteur ?")) return;
+
+    try {
+      await producerAPI.approve(id);
+      dispatch(approveProducer(id));
+      alert("Producteur approuvé avec succès !");
+    } catch (error) {
+      alert("Erreur lors de l'approbation");
+    }
+  };
+
+  // Rejeter un producteur
+  const handleReject = async (id: number) => {
+    if (!confirm("Rejeter ce producteur ? Cette action est définitive.")) return;
+
+    try {
+      await producerAPI.reject(id);
+      dispatch(rejectProducer(id));
+      alert("Producteur rejeté");
+    } catch (error) {
+      alert("Erreur lors du rejet");
+    }
+  };
+
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold mb-8">Dashboard Admin</h1>
@@ -59,17 +109,27 @@ function AdminDashboard() {
       {/* Onglets */}
       <div className="flex gap-4 mb-6">
         <button
-          onClick={() => setShowDeactivated(false)}
+          onClick={() => setCurrentTab('active')}
           className={`px-4 py-2 rounded ${
-            !showDeactivated ? "bg-gray-900 text-white" : "bg-gray-200"
+            currentTab === 'active' ? "bg-gray-900 text-white" : "bg-gray-200"
           }`}
         >
           Producteurs actifs ({activeProducers?.length ?? 0})
         </button>
+        
+        <button
+          onClick={loadPending}
+          className={`px-4 py-2 rounded ${
+            currentTab === 'pending' ? "bg-amber-600 text-white" : "bg-amber-100"
+          }`}
+        >
+          En attente de validation ({pendingProducers.length})
+        </button>
+        
         <button
           onClick={loadDeactivated}
           className={`px-4 py-2 rounded ${
-            showDeactivated ? "bg-gray-900 text-white" : "bg-gray-200"
+            currentTab === 'deactivated' ? "bg-gray-900 text-white" : "bg-gray-200"
           }`}
         >
           Producteurs désactivés ({deactivatedProducers.length})
@@ -77,7 +137,7 @@ function AdminDashboard() {
       </div>
 
       {/* Liste des producteurs actifs */}
-      {!showDeactivated && (
+      {currentTab === 'active' && (
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Producteurs actifs</h2>
           {activeProducers?.map((producer) => (
@@ -100,8 +160,50 @@ function AdminDashboard() {
         </div>
       )}
 
+      {/* Liste des producteurs en attente */}
+      {currentTab === 'pending' && (
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Producteurs en attente de validation</h2>
+          {pendingProducers.length === 0 ? (
+            <p className="text-gray-500">Aucun producteur en attente</p>
+          ) : (
+            pendingProducers.map((producer) => (
+              <div
+                key={producer.id}
+                className="flex items-center justify-between p-4 bg-amber-50 rounded shadow border-l-4 border-amber-500"
+              >
+                <div>
+                  <h3 className="font-semibold">{producer.name}</h3>
+                  <p className="text-sm text-gray-600">{producer.email}</p>
+                  {producer.address && (
+                    <p className="text-sm text-gray-500">{producer.address}</p>
+                  )}
+                  {producer.phoneNumber && (
+                    <p className="text-sm text-gray-500">{producer.phoneNumber}</p>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleApprove(producer.id)}
+                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                  >
+                    ✓ Approuver
+                  </button>
+                  <button
+                    onClick={() => handleReject(producer.id)}
+                    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                  >
+                    ✗ Rejeter
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+
       {/* Liste des producteurs désactivés */}
-      {showDeactivated && (
+      {currentTab === 'deactivated' && (
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Producteurs désactivés</h2>
           {deactivatedProducers.length === 0 ? (

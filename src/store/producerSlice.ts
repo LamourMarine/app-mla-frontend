@@ -8,6 +8,7 @@ import type { AppDispatch } from ".";
 interface ProducersState {
   producers: Producer[];
   deactivatedProducers: Producer[];
+  pendingProducers: Producer[];
   loading: boolean;
   error: string | null;
 }
@@ -15,6 +16,7 @@ interface ProducersState {
 const initialState: ProducersState = {
   producers: [],
   deactivatedProducers: [],
+  pendingProducers: [],
   loading: false,
   error: null,
 };
@@ -48,6 +50,22 @@ export const producerSlice = createSlice({
         state.producers.push(producer);
       }
     },
+    setPendingProducers: (state, action: PayloadAction<Producer[]>) => {
+      state.pendingProducers = action.payload;
+    },
+    approveProducer: (state, action: PayloadAction<number>) => {
+      const id = action.payload;
+      const producer = state.pendingProducers.find((p) => p.id === id);
+      state.pendingProducers = state.pendingProducers.filter((p) => p.id !== id);
+      if (producer) {
+        state.producers.push(producer);
+      }
+    },
+    rejectProducer: (state, action: PayloadAction<number>) => {
+      const id = action.payload;
+      state.pendingProducers = state.pendingProducers.filter((p) => p.id !== id);
+    },
+
   },
 });
 
@@ -57,6 +75,9 @@ export const {
   setProducers,
   setDeactivatedProducers,
   reactivateProducer,
+  setPendingProducers,
+  approveProducer,
+  rejectProducer,
 } = producerSlice.actions;
 export default producerSlice.reducer;
 
