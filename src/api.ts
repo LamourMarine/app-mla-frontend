@@ -165,6 +165,15 @@ export const producerAPI = {
   // Suppression définitive (si vraiment nécessaire)
   permanentDelete: (id: number) => 
     api.delete(`/producers/${id}`),
+
+  getPending: () => 
+    api.get('/admin/producers/pending'),
+  
+  approve: (id: number) => 
+    api.patch(`/admin/producers/${id}/approve`),
+  
+  reject: (id: number) => 
+    api.patch(`/admin/producers/${id}/reject`),
 }
 
 // ==================== PRODUITS ====================

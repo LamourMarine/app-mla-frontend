@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         localStorage.removeItem("token");
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [token, dispatch]);
 
   const login = async (newToken: string) => {
     localStorage.setItem("token", newToken);
