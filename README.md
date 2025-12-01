@@ -1,117 +1,163 @@
 # 🌾 Cantine Verte - Frontend
 
-Interface web pour la plateforme de vente de produits locaux aux cantines scolaires.
+Web interface for the local products sales platform to school canteens.
 
-## 📋 Prérequis
+## Prerequisites
 
 - Node.js 18+
-- npm
+- npm or yarn
 
-## 🚀 Installation
+## Installation
 
-### 1. Cloner le projet
-
+### 1. Clone the project
 ```bash
 git clone https://github.com/LamourMarine/app-mla-frontend.git
 cd app-mla-frontend
 ```
 
-### 2. Installer les dépendances
-
+### 2. Install dependencies
 ```bash
 npm install
 ```
 
-### 3. Configurer l'environnement
+### 3. Configure environment
 
-Créer un fichier `.env` à la racine :
-
+Create a `.env` file at the root:
 ```env
 VITE_API_URL=http://localhost:8000/api
+VITE_FRONT_URL=http://localhost:5173
 ```
 
-### 4. Lancer le serveur de développement
-
+### 4. Start development server
 ```bash
 npm run dev
 ```
 
-L'application est accessible sur `http://localhost:5173`
+The application is accessible at `http://localhost:5173`
 
-## 📱 Pages disponibles
+## Available Pages
 
-- `/` - Page d'accueil
-- `/login` - Connexion
-- `/register` - Inscription
-- `/products` - Catalogue de produits
-- `/producers` - Liste des producteurs
-- `/cart` - Panier (à venir)
+- `/` - Home page
+- `/login` - Login
+- `/register` - Registration
+- `/products` - Product catalog
+- `/producers` - Producers list
+- `/cart` - Shopping cart
+- `/order-confirmation` - Order confirmation
+- `/admin` - Admin dashboard (admin only)
+- `/producer/products` - My products (producers only)
 
-## 🛠️ Technologies
+## Technologies
 
-- **Framework** : React 18
-- **Langage** : TypeScript
-- **Styling** : Tailwind CSS
-- **Routing** : React Router v6
-- **HTTP Client** : Axios
-- **Icons** : Lucide React
-- **Build Tool** : Vite
+- **Framework**: React 18
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Routing**: React Router v6
+- **State Management**: Redux Toolkit
+- **HTTP Client**: Axios
+- **Notifications**: React Hot Toast
+- **Build Tool**: Vite
 
-## 🎨 Design
+## Design
 
-- **Palette** : Verts, oranges, jaunes (thème agricole)
-- **Style** : Moderne, gradients, cards avec ombres
-- **Responsive** : Mobile-first avec Tailwind
+- **Color Palette**: Greens, oranges, yellows (agricultural theme)
+- **Style**: Modern, gradients, cards with shadows
+- **Responsive**: Mobile-first with Tailwind breakpoints
 
-## 📦 Structure du projet
-
+## Project Structure
 ```
 src/
-├── api.tsx              # Configuration Axios et endpoints
-├── components/          # Composants réutilisables
+├── components/          # Reusable components
+│   ├── AdminRoute.tsx
+│   ├── CartItem.tsx
 │   ├── Footer.tsx
 │   ├── LoginForm.tsx
 │   ├── Navbar.tsx
 │   ├── ProducerCard.tsx
-│   └── ProducersCarrousel.tsx
 │   ├── ProductCard.tsx
-├── pages/               # Pages principales
+│   └── Toast.tsx
+├── context/
+│   └── AuthContext.tsx  # Authentication context
+├── layouts/
+│   └── Layout.tsx       # Main layout
+├── pages/               # Main pages
+│   ├── producer/
+│   │   ├── ProducerProductsList.tsx
+│   │   ├── ProductCreatePage.tsx
+│   │   └── ProductEditPage.tsx
+│   ├── AdminDashboard.tsx
+│   ├── Cart.tsx
 │   ├── Home.tsx
-│   ├── Products.tsx
-│   ├── Producers.tsx
 │   ├── LoginPage.tsx
+│   ├── OrderConfirmation.tsx
+│   ├── Producers.tsx
+│   ├── Products.tsx
 │   └── Register.tsx
-├── Types/   
-│   └── category.ts            # Types TypeScript
-│   └── producers.ts
-│   └── product.ts
-└── Layout.tsx           # Layout général
+├── store/               # Redux store
+│   ├── cartSlice.ts
+│   ├── hooks.ts
+│   ├── index.ts
+│   └── producerSlice.ts
+│   └── productsSlice.ts
+├── Types/               # TypeScript types
+│   ├── category.ts
+│   ├── producer.ts
+│   ├── product.ts
+│   └── unit.ts
+├── api.ts               # Axios configuration and API endpoints
+├── App.css
+├── App.tsx
+├── index.css
+├── main.tsx
+└── vite-env.d.ts
 ```
+## Authentication
 
-## 🔐 Authentification
+The JWT token is stored in `localStorage` and automatically added to requests via an Axios interceptor.
 
-Le token JWT est stocké dans `localStorage` et automatiquement ajouté aux requêtes via un intercepteur Axios.
+## Features
 
-## 🎯 Fonctionnalités
+- ✅ Authentication (login/register/logout)
+- ✅ Product catalog with category filtering
+- ✅ Producers page with product carousel
+- ✅ Shopping cart with localStorage persistence
+- ✅ Order creation and confirmation
+- ✅ Producer validation system (admin)
+- ✅ Producer dashboard (manage products)
+- ✅ Admin dashboard (manage producers)
+- ✅ Responsive design
+- ✅ Toast notifications
 
-- ✅ Authentification (connexion/inscription/déconnexion)
-- ✅ Catalogue de produits avec filtrage par catégorie
-- ✅ Page producteurs avec carrousel de produits
-- ✅ Design responsive
-- 🚧 Panier d'achat (en cours)
-- 🚧 Gestion de commandes (à venir)
+## User Roles
 
-## 🧪 Scripts disponibles
+- **Structure/Canteen**: Can browse products and place orders
+- **Producer**: Can manage their products (requires admin approval)
+- **Admin**: Can validate producers, deactivate accounts
 
+## Available Scripts
 ```bash
-npm run dev          # Lancer en développement
-npm run build        # Build pour production
-npm run preview      # Preview du build
-npm run lint         # Linter ESLint
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run ESLint
 ```
 
-## 📝 Notes
+## Deployment
 
-- Les images sont servies depuis le backend (`/uploads/products/`)
-- Le backend doit être lancé sur `http://localhost:8000`
-- CORS doit être configuré côté backend
+### Production
+- **Frontend**: https://cantineverte.netlify.app
+- **Backend API**: https://app-mla-backend.onrender.com
+- **Database**: Supabase (PostgreSQL)
+
+### Environment Variables for Production
+Configure on Netlify:
+- `VITE_API_URL`: https://app-mla-backend.onrender.com/api
+- `VITE_FRONT_URL`: https://cantineverte.netlify.app
+
+## Technical Notes
+
+- Product images are served from the backend (`/images/`)
+- The backend must be running for the app to work
+- CORS is configured on the backend side
+- Cart data is persisted per user in localStorage
+- Redux Toolkit is used for global state management
