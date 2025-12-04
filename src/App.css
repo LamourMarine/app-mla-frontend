@@ -42,7 +42,7 @@
   color: #888;
 }
 
-@media (min-width: 1220px) {
+@media (min-width: 1170px) {
   .nav-show {
     display: flex !important;
   }
@@ -51,7 +51,7 @@
   }
 }
 
-@media (max-width: 1219px) {
+@media (max-width: 1169px) {
   .nav-show {
     display: none !important;
   }

@@ -6,7 +6,7 @@ import type { Product, ProductPayload } from './Types/product';
 
 // URL de base de l'API
 export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-export const ASSETS_BASE_URL = 'http://localhost:8000';
+export const ASSETS_BASE_URL = import.meta.env.VITE_ASSETS_URL || 'http://localhost:8000';
 
 console.log('FICHIER api.tsx CHARGÉ !');
 console.log('import.meta.env.VITE_API_URL:', import.meta.env.VITE_API_URL);
