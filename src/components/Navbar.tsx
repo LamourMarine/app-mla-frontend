@@ -39,7 +39,7 @@ const Navbar = ({ logo }: NavbarProps) => {
     setIsOpen(false);
   };
   return (
-    <nav className="bg-[#002A22] sticky top-0 z-50 shadow-md">
+    <nav className=" bg-[#002A22] sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo + Nom */}
@@ -155,14 +155,14 @@ const Navbar = ({ logo }: NavbarProps) => {
                     Connexion
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    to="/register"
-                    className="px-4 py-2 bg-white text-[#002A22] rounded-lg font-medium hover:bg-emerald-50 transition-colors"
-                  >
-                    Créer un compte
-                  </Link>
-                </li>
+                  <li>
+                    <Link
+                      to="/register"
+                      className="px-4 py-2 bg-white text-[#002A22] rounded-lg font-medium hover:bg-emerald-50 transition-colors"
+                    >
+                      Créer un compte
+                    </Link>
+                  </li>
               </>
             )}
           </ul>
@@ -200,118 +200,115 @@ const Navbar = ({ logo }: NavbarProps) => {
           </div>
         </div>
       </div>
-
       {/* Menu mobile déroulant */}
       {isOpen && (
-        <div className="nav-hide bg-[#002A22] border-t border-white/10">
-          <ul className="px-4 py-4 space-y-3">
-            <li>
-              <Link
-                to="/"
-                onClick={() => setIsOpen(false)}
-                className="block text-white hover:text-emerald-400 font-medium transition-colors py-2"
-              >
-                Accueil
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/products"
-                onClick={() => setIsOpen(false)}
-                className="block text-white hover:text-emerald-400 font-medium transition-colors py-2"
-              >
-                Produits
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/producers"
-                onClick={() => setIsOpen(false)}
-                className="block text-white hover:text-emerald-400 font-medium transition-colors py-2"
-              >
-                Producteurs
-              </Link>
-            </li>
+        <ul className="nav-hide absolute top-full left-0 w-full bg-[#002A22]/85 backdrop-blur-lg border-t border-white/10 shadow-xl px-6 py-4 space-y-3 z-50 flex flex-col">
+          <li>
+            <Link
+              to="/"
+              onClick={() => setIsOpen(false)}
+              className="block text-white hover:text-emerald-400 font-medium transition-colors py-2 text-center"
+            >
+              Accueil
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/products"
+              onClick={() => setIsOpen(false)}
+              className="block text-white hover:text-emerald-400 font-medium transition-colors py-2 text-center"
+            >
+              Produits
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/producers"
+              onClick={() => setIsOpen(false)}
+              className="block text-white hover:text-emerald-400 font-medium transition-colors py-2 text-center"
+            >
+              Producteurs
+            </Link>
+          </li>
 
-            {user?.roles?.includes("ROLE_PRODUCTEUR") && (
+          {user?.roles?.includes("ROLE_PRODUCTEUR") && (
+            <li>
+              <Link
+                to="/producer/products"
+                onClick={() => setIsOpen(false)}
+                className="block text-white hover:text-emerald-400 font-medium transition-colors py-2 text-center"
+              >
+                Mes produits
+              </Link>
+            </li>
+          )}
+
+          <li>
+            <Link
+              to="/contact"
+              onClick={() => setIsOpen(false)}
+              className="block text-white hover:text-emerald-400 font-medium transition-colors py-2 text-center"
+            >
+              Contact
+            </Link>
+          </li>
+
+          {isAdmin && (
+            <li>
+              <Link
+                to="/admin"
+                onClick={() => setIsOpen(false)}
+                className="block text-white hover:text-emerald-400 font-medium transition-colors py-2 text-center"
+              >
+                Dashboard
+              </Link>
+            </li>
+          )}
+
+          {/* Séparateur */}
+          <div className="h-px bg-white/10 my-3" />
+
+          {isAuthenticated ? (
+            <>
+              <li className="text-emerald-400 font-medium py-2 text-center">
+                🌿 {user?.name}
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsOpen(false);
+                  }}
+                  className="w-full px-4 py-2 bg-white text-[#002A22] rounded-lg font-medium hover:bg-emerald-50 transition-colors text-center"
+                >
+                  Déconnexion
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
               <li>
                 <Link
-                  to="/producer/products"
+                  to="/login"
                   onClick={() => setIsOpen(false)}
-                  className="block text-white hover:text-emerald-400 font-medium transition-colors py-2"
+                  className="block text-white hover:text-emerald-400 font-medium transition-colors py-2 text-center"
                 >
-                  Mes produits
+                  Connexion
                 </Link>
               </li>
-            )}
-
-            <li>
-              <Link
-                to="/contact"
-                onClick={() => setIsOpen(false)}
-                className="block text-white hover:text-emerald-400 font-medium transition-colors py-2"
-              >
-                Contact
-              </Link>
-            </li>
-
-            {isAdmin && (
               <li>
                 <Link
-                  to="/admin"
+                  to="/register"
                   onClick={() => setIsOpen(false)}
-                  className="block text-white hover:text-emerald-400 font-medium transition-colors py-2"
+                  className="block px-4 py-2 bg-white text-[#002A22] rounded-lg font-medium hover:bg-emerald-50 transition-colors text-center max-w-xs mx-auto"
                 >
-                  Dashboard
+                  Créer un compte
                 </Link>
               </li>
-            )}
-
-            {/* Séparateur */}
-            <div className="h-px bg-white/10 my-3" />
-
-            {isAuthenticated ? (
-              <>
-                <li className="text-emerald-400 font-medium py-2">
-                  🌿 {user?.name}
-                </li>
-                <li>
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setIsOpen(false);
-                    }}
-                    className="w-full px-4 py-2 bg-white text-[#002A22] rounded-lg font-medium hover:bg-emerald-50 transition-colors text-center"
-                  >
-                    Déconnexion
-                  </button>
-                </li>
-              </>
-            ) : (
-              <>
-                <li>
-                  <Link
-                    to="/login"
-                    onClick={() => setIsOpen(false)}
-                    className="block text-white hover:text-emerald-400 font-medium transition-colors py-2"
-                  >
-                    Connexion
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/register"
-                    onClick={() => setIsOpen(false)}
-                    className="block px-4 py-2 bg-white text-[#002A22] rounded-lg font-medium hover:bg-emerald-50 transition-colors text-center"
-                  >
-                    Créer un compte
-                  </Link>
-                </li>
-              </>
-            )}
-          </ul>
-        </div>
-      )}
+            </>
+          )}
+        </ul>
+      )}{" "}
     </nav>
   );
 };
