@@ -15,6 +15,7 @@ import { AdminRoute } from './components/AdminRoute';
 import  AdminDashboard  from "./pages/AdminDashboard";
 import Cart from './pages/Cart';
 import OrderConfirmation from "./pages/OrderConfirmation";
+import Contact from './pages/Contact';
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
           <Route path="/admin" element={<AdminRoute> <AdminDashboard /> </AdminRoute>} />
           <Route path="/cart" element={<Cart />} /> 
           <Route path="/order-confirmation" element={<OrderConfirmation />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </Layout>
     </Router>
