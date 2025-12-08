@@ -45,7 +45,7 @@ const Navbar = ({ logo }: NavbarProps) => {
           {/* Logo + Nom */}
           <div className="flex items-center gap-4">
             <img src={logo} alt="Cantine Verte" className="w-12 h-10" />
-            <p className="text-emerald-400 font-bold text-xl italic whitespace-nowrap">
+            <p className="hidden [@media(min-width:425px)]:block text-emerald-400 font-bold text-xl italic whitespace-nowrap">
               Cantine Verte
             </p>
           </div>
@@ -155,14 +155,14 @@ const Navbar = ({ logo }: NavbarProps) => {
                     Connexion
                   </Link>
                 </li>
-                  <li>
-                    <Link
-                      to="/register"
-                      className="px-4 py-2 bg-white text-[#002A22] rounded-lg font-medium hover:bg-emerald-50 transition-colors"
-                    >
-                      Créer un compte
-                    </Link>
-                  </li>
+                <li>
+                  <Link
+                    to="/register"
+                    className="px-4 py-2 bg-white text-[#002A22] rounded-lg font-medium hover:bg-emerald-50 transition-colors"
+                  >
+                    Créer un compte
+                  </Link>
+                </li>
               </>
             )}
           </ul>
