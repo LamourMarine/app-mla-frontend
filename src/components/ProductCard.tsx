@@ -5,6 +5,7 @@ import { useState } from "react";
 import { addItem } from "../store/cartSlice";
 import { useAppDispatch } from "../store/hooks";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 interface ProductCardProps {
   product: Product;
@@ -21,7 +22,9 @@ function ProductCard({ product }: ProductCardProps) {
   const imageUrl = imagePath.startsWith("/")
     ? `${ASSETS_BASE_URL}${imagePath}`
     : imagePath;
-    console.log('Image URL:', imageUrl);
+  console.log("Image URL:", imageUrl);
+
+  const navigate = useNavigate();
 
   const handleAddToCart = () => {
     dispatch(
@@ -31,10 +34,26 @@ function ProductCard({ product }: ProductCardProps) {
       })
     );
     console.log("Produit ajouté:", product.id, "quantité:", quantity);
-    toast.success(`${product.name} ajouté au panier`, {
-      icon: '🛒',
-      duration: 2000,
-    });
+    toast.success(
+      (t) => (
+        <div className="flex items-center gap-3">
+          <span>🛒 {product.name} ajouté au panier</span>
+          <button
+            onClick={() => {
+              navigate("/cart");
+              toast.dismiss(t.id);
+            }}
+            className="px-3 py-1 bg-emerald-600 text-white rounded text-sm font-medium hover:bg-emerald-700"
+          >
+            Voir le panier
+          </button>
+        </div>
+      ),
+      {
+        duration: 4000,
+      }
+    );
+
     setQuantity(1);
   };
 
