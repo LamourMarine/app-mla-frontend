@@ -32,7 +32,7 @@ const Navbar = ({ logo }: NavbarProps) => {
       </nav>
     );
   }
-
+  
   const handleLogout = () => {
     authLogout();
     navigate("/");
@@ -42,12 +42,16 @@ const Navbar = ({ logo }: NavbarProps) => {
     <nav className=" bg-[#002A22] sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo + Nom */}
+          {/*Boutons Logo + Nom */}
           <div className="flex items-center gap-4">
+            <button
+            onClick={() => navigate("/")}
+            className="cursor-pointer flex items-center gap-4">
             <img src={logo} alt="Cantine Verte" className="w-12 h-10" />
             <p className="hidden [@media(min-width:425px)]:block text-emerald-400 font-bold text-xl italic whitespace-nowrap">
               Cantine Verte
             </p>
+            </button>
           </div>
           {/* Menu Desktop */}
           <ul className="nav-show hiden items-center gap-4">
