@@ -1,6 +1,5 @@
 // src/components/Footer.tsx
 import { Link } from "react-router-dom";
-import logo from "../assets/logo.png"; // Ajuste le chemin selon ton logo
 
 const Footer = () => {
   return (
@@ -9,19 +8,12 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           
-          {/* Colonne 1 : Logo + Description */}
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <img
-                src={logo}
-                alt="Cantine Verte"
-                className="w-12 h-10"
-              />
-              <p className="text-emerald-400 font-bold text-xl italic">
+          {/* Colonne 1 : Description */}
+          <div className="md:col-span-2 text-center md:text-left">
+              <p className="text-emerald-400 font-bold text-xl italic mb-4">
                 Cantine Verte
               </p>
-            </div>
-            <p className="text-gray-300 text-sm leading-relaxed max-w-md">
+            <p className="text-gray-300 text-sm leading-relaxed max-w-md mx-auto md:mx-0">
               Des produits frais et locaux pour des cantines engagées. 
               Soutenez les producteurs de votre région tout en offrant 
               une alimentation saine et de qualité.
