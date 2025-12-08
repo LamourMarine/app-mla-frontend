@@ -1,8 +1,9 @@
 // src/pages/Products.tsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { productAPI } from "../api";
 import type { Product } from "../Types/product";
 import ProductCard from "../components/ProductCard";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -12,6 +13,18 @@ export default function Products() {
   const [availability, setAvailability] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const tabsRef = useRef<HTMLDivElement>(null);
+
+  const scrollTabs = (direction: "left" | "right") => {
+    if (tabsRef.current) {
+        const scrollAmount = window.innerWidth < 640 ? 150 : 200; //pixels à défiler
+      tabsRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
 
   useEffect(() => {
     productAPI
@@ -41,109 +54,125 @@ export default function Products() {
   if (error)
     return <div className="error text-center p-8 text-red-600">{error}</div>;
 
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* TABS épurés */}
-        <div className="flex gap-2 mb-8 mt-8 justify-center border-b border-gray-200 overflow-x-auto">
+        {/* Container avec flèches  */}
+        <div className="relative flex items-center gap-2 mb-8 mt-8">
+          {/* Flèche gauche */}
           <button
-            onClick={() => setActiveTab("Entrées")}
-            className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
-              activeTab === "Entrées"
-                ? "text-gray-900"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
+            onClick={() => scrollTabs("left")}
+            className="p-2 bg-white rounded-full shadow hover:bg-gray-50 flex-shrink-0"
           >
-            🥗 Entrées
-            {activeTab === "Entrées" && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
-            )}
+            <ChevronLeft className="w-5 h-5" />
           </button>
 
-          <button
-            onClick={() => setActiveTab("Légumes")}
-            className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
-              activeTab === "Légumes"
-                ? "text-gray-900"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
+          {/* Zone scrollable des onglets */}
+          <div
+            ref={tabsRef}
+            className="flex gap-2 overflow-x-auto scroll-smooth border-b border-gray-200 flex-1 hide-scrollbar"
           >
-            🥕 Légumes
-            {activeTab === "Légumes" && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
-            )}
-          </button>
+            <button
+              onClick={() => setActiveTab("Entrées")}
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Entrées"
+                  ? "text-gray-900"
+                  : "text-gray-500 hover:text-gray-700"
+                }`}
+            >
+              🥗 Entrées
+              {activeTab === "Entrées" && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
+              )}
+            </button>
 
-          <button
-            onClick={() => setActiveTab("Viandes")}
-            className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
-              activeTab === "Viandes"
-                ? "text-gray-900"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            🍖 Viandes
-            {activeTab === "Viandes" && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
-            )}
-          </button>
+            <button
+              onClick={() => setActiveTab("Légumes")}
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Légumes"
+                  ? "text-gray-900"
+                  : "text-gray-500 hover:text-gray-700"
+                }`}
+            >
+              🥕 Légumes
+              {activeTab === "Légumes" && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
+              )}
+            </button>
 
-          <button
-            onClick={() => setActiveTab("Produits laitiers")}
-            className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
-              activeTab === "Produits laitiers"
-                ? "text-gray-900"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            🧀 Produits laitiers
-            {activeTab === "Produits laitiers" && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
-            )}
-          </button>
+            <button
+              onClick={() => setActiveTab("Viandes")}
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Viandes"
+                  ? "text-gray-900"
+                  : "text-gray-500 hover:text-gray-700"
+                }`}
+            >
+              🍖 Viandes
+              {activeTab === "Viandes" && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
+              )}
+            </button>
 
-          <button
-            onClick={() => setActiveTab("Fruits")}
-            className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
-              activeTab === "Fruits"
-                ? "text-gray-900"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            🍎 Fruits
-            {activeTab === "Fruits" && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
-            )}
-          </button>
+            <button
+              onClick={() => setActiveTab("Produits laitiers")}
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Produits laitiers"
+                  ? "text-gray-900"
+                  : "text-gray-500 hover:text-gray-700"
+                }`}
+            >
+              🧀 Produits laitiers
+              {activeTab === "Produits laitiers" && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
+              )}
+            </button>
 
-          <button
-            onClick={() => setActiveTab("Féculents")}
-            className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
-              activeTab === "Féculents"
-                ? "text-gray-900"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            🍝 Féculents
-            {activeTab === "Féculents" && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
-            )}
-          </button>
+            <button
+              onClick={() => setActiveTab("Fruits")}
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Fruits"
+                  ? "text-gray-900"
+                  : "text-gray-500 hover:text-gray-700"
+                }`}
+            >
+              🍎 Fruits
+              {activeTab === "Fruits" && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
+              )}
+            </button>
 
+            <button
+              onClick={() => setActiveTab("Féculents")}
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Féculents"
+                  ? "text-gray-900"
+                  : "text-gray-500 hover:text-gray-700"
+                }`}
+            >
+              🍝 Féculents
+              {activeTab === "Féculents" && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
+              )}
+            </button>
+
+            <button
+              onClick={() => setActiveTab("Épicerie")}
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Épicerie"
+                  ? "text-gray-900"
+                  : "text-gray-500 hover:text-gray-700"
+                }`}
+            >
+              🛒 Épicerie
+              {activeTab === "Épicerie" && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
+              )}
+            </button>
+          </div>
+          {/* Flèche droite */}
           <button
-            onClick={() => setActiveTab("Épicerie")}
-            className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
-              activeTab === "Épicerie"
-                ? "text-gray-900"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
+            onClick={() => scrollTabs("right")}
+            className="p-2 bg-white rounded-full shadow hover:bg-gray-50 flex-shrink-0"
           >
-            🛒 Épicerie
-            {activeTab === "Épicerie" && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
-            )}
+            <ChevronRight className="w-5 h-5" />
           </button>
         </div>
+
 
         {/* Options (checkboxes) */}
         <div className="flex gap-6 justify-center mb-6">
