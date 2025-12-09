@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Toaster } from "react-hot-toast"; // ⬅️ AJOUTE CETTE LIGNE
+import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import Layout from "./layouts/Layout";
 import Logo from "./assets/logo_2.png";

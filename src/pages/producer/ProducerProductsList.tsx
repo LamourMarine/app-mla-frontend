@@ -13,7 +13,7 @@ export default function ProducerProductsList() {
   }, []);
 
   const handleDelete = (id: number) => {
-    // À implémenter plus tard
+    // À implémenter
     console.log("Supprimer", id);
   };
 

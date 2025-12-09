@@ -28,13 +28,12 @@ function Login() {
       // ÉTAPE 2 : Récupère le token JWT de la réponse
       const token = response.token;
       
-      // ÉTAPE 3 : Enregistre le token dans le contexte (et probablement localStorage)
+      // ÉTAPE 3 : Enregistre le token dans le contexte et localStorage
       await login(token);
       
       // ÉTAPE 4 : Redirige vers la page produits après connexion réussie
       navigate("/products");
     } catch (err) {
-      // Si l'API renvoie une erreur (mauvais identifiants, serveur down, etc.)
       setError("Email ou mot de passe incorrect");
     }
   };
@@ -58,12 +57,11 @@ function Login() {
           className="w-full bg-emerald-500 text-white placeholder-white/70 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-700"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)} // Met à jour l'état à chaque frappe
+          onChange={(e) => setPassword(e.target.value)}
           placeholder="Mot de passe"
           required
         />
         
-        {/* Affiche le message d'erreur seulement s'il existe */}
         {error && <p className="text-red-500">{error}</p>}
         
         <button

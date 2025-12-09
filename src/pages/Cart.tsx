@@ -39,10 +39,8 @@ const Cart = () => {
       // Envoyer la commande
       const response = await orderAPI.create(orderData);
 
-      // Vider le panier
       dispatch(clearCart());
 
-      // Toast de succès
       toast.success("Commande validée avec succès !", {
         duration: 3000,
       });
@@ -56,7 +54,6 @@ const Cart = () => {
       const errorMessage =
         error.response?.data?.message ||
         "Erreur lors de la création de la commande";
-      // Toast d'erreur
       toast.error(errorMessage, {
         duration: 5000,
       });

@@ -67,7 +67,7 @@ function Register() {
         userType: formData.userType,
       });
 
-      // Succès : rediriger vers login
+      // Succès: rediriger vers login
       alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
       navigate("/login");
     } catch (err: any) {
@@ -169,7 +169,7 @@ function Register() {
                 required
                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none transition-colors bg-white"
               >
-                {/*<option value="client">🛒 Client</option>*/}
+                {/*<option value="client"> Client</option>*/}
                 <option value="producteur">👨‍🌾 Producteur</option>
                 <option value="structure">🏢 Structure</option>
               </select>

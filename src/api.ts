@@ -162,7 +162,7 @@ export const producerAPI = {
   getDeactivated: () => 
     api.get('/producers/deactivated'),
   
-  // Suppression définitive (si vraiment nécessaire)
+  // Suppression définitive
   permanentDelete: (id: number) => 
     api.delete(`/producers/${id}`),
 

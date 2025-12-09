@@ -23,7 +23,7 @@ export interface Product {
 
 export type ProductPayload = {
   name: string;
-  price: number; // String car DECIMAL backend
+  price: number; // String car decimal backend
   description_Product: string;
   categoryId: number;
   unitId: number;

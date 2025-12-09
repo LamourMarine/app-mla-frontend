@@ -8,7 +8,6 @@ interface ProducerCardProps {
 }
 
 function ProducerCard({ producer }: ProducerCardProps) {
-  // Gestion du chemin de l'image (local ou externe)
   const imagePath =
     producer.photo || (producer as any).photo || "/images/default.jpg";
   const imageUrl = imagePath.startsWith("/")

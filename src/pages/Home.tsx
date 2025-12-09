@@ -21,7 +21,6 @@ function Home() {
     <div className="home-page bg-gradient-to-b from-white to-green-50/30">
       {/* HERO SECTION */}
       <section className="hero relative h-screen overflow-hidden">
-        {/* Image avec parallax */}
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -101,7 +100,7 @@ function Home() {
         </div>
       </section>
 
-      {/* AVANTAGES */}
+      {/* Avantages */}
       <section className="py-24 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 space-y-4">
@@ -172,7 +171,7 @@ function Home() {
         </div>
       </section>
 
-      {/* PLATS DU JOUR */}
+      {/* Plats du jour */}
       <section className="py-24 px-4 bg-gradient-to-br from-orange-50/50 via-yellow-50/30 to-green-50/50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 space-y-4">
@@ -266,7 +265,7 @@ function Home() {
         </div>
       </section>
 
-      {/* TÉMOIGNAGES */}
+      {/* Témoignages */}
       <section className="py-24 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 space-y-4">

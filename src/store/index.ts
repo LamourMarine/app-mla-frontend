@@ -3,7 +3,7 @@ import producerReducer from "./producerSlice";
 import productReducer from "./productsSlice";
 import cartReducer from "./cartSlice";
 
-// ✅ Variable pour bloquer la sauvegarde pendant le chargement
+// Variable pour bloquer la sauvegarde pendant le chargement
 let isLoadingCart = false;
 
 export const setLoadingCart = (loading: boolean) => {
@@ -20,9 +20,9 @@ export const store = configureStore({
 
 // Subscribe pour sauvegarder automatiquement le panier
 store.subscribe(() => {
-  // ✅ Ne pas sauvegarder si on est en train de charger
+  // Ne pas sauvegarder si on est en train de charger
   if (isLoadingCart) {
-    console.log("⏸️ Sauvegarde ignorée (chargement en cours)");
+    console.log("⏸Sauvegarde ignorée (chargement en cours)");
     return;
   }
 
@@ -40,7 +40,7 @@ store.subscribe(() => {
       console.log(`💾 Panier sauvegardé pour user ${userId}`);
     }
   } catch (error) {
-    console.error("❌ Erreur sauvegarde panier:", error);
+    console.error("Erreur sauvegarde panier:", error);
   }
 });
 
