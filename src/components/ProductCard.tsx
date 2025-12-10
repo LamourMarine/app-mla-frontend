@@ -1,11 +1,12 @@
 // src/components/ProductCard.tsx
 import type { Product } from "../Types/product";
 import { ASSETS_BASE_URL } from "../api";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { addItem } from "../store/cartSlice";
 import { useAppDispatch } from "../store/hooks";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 interface ProductCardProps {
   product: Product;
@@ -25,8 +26,17 @@ function ProductCard({ product }: ProductCardProps) {
   console.log("Image URL:", imageUrl);
 
   const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthContext);
 
   const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      toast.error('Vous devez être connecté pour ajouter au panier', {
+        icon: '🔒',
+        duration: 3000,
+      });
+      setTimeout(() => navigate('/login'), 1500);
+      return;
+    }
     dispatch(
       addItem({
         productId: product.id,
