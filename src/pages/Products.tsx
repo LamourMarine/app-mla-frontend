@@ -13,16 +13,25 @@ export default function Products() {
   const [availability, setAvailability] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showArrows, setShowArrows] = useState(false);
 
   const tabsRef = useRef<HTMLDivElement>(null);
 
   const scrollTabs = (direction: "left" | "right") => {
     if (tabsRef.current) {
-        const scrollAmount = window.innerWidth < 640 ? 150 : 200; //pixels à défiler
+      const scrollAmount = window.innerWidth < 640 ? 150 : 200;
       tabsRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
       });
+    }
+  };
+
+  // Vérifier si les onglets dépassent et nécessitent un scroll
+  const checkOverflow = () => {
+    if (tabsRef.current) {
+      const hasOverflow = tabsRef.current.scrollWidth > tabsRef.current.clientWidth;
+      setShowArrows(hasOverflow);
     }
   };
 
@@ -49,36 +58,48 @@ export default function Products() {
     setFilteredProducts(filtered);
   }, [products, activeTab, isBio, availability]);
 
+  // Vérifier le débordement au montage et au redimensionnement
+  useEffect(() => {
+    checkOverflow();
+    window.addEventListener("resize", checkOverflow);
+    return () => window.removeEventListener("resize", checkOverflow);
+  }, []);
+
   if (loading)
     return <div className="loading text-center p-8">Chargement...</div>;
   if (error)
     return <div className="error text-center p-8 text-red-600">{error}</div>;
 
-
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Container avec flèches  */}
+        {/* Container avec flèches conditionnelles */}
         <div className="relative flex items-center gap-2 mb-8 mt-8">
-          {/* Flèche gauche */}
-          <button
-            onClick={() => scrollTabs("left")}
-            className="p-2 bg-white rounded-full shadow hover:bg-gray-50 flex-shrink-0"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
+          {/* Flèche gauche - affichée seulement si nécessaire */}
+          {showArrows && (
+            <button
+              onClick={() => scrollTabs("left")}
+              className="p-2 bg-white rounded-full shadow hover:bg-gray-50 flex-shrink-0"
+              aria-label="Défiler vers la gauche"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+          )}
 
           {/* Zone scrollable des onglets */}
           <div
             ref={tabsRef}
-            className="flex gap-2 overflow-x-auto scroll-smooth border-b border-gray-200 flex-1 hide-scrollbar"
+            className={`flex gap-2 overflow-x-auto scroll-smooth border-b border-gray-200 flex-1 hide-scrollbar ${
+              showArrows ? "" : "justify-center"
+            }`}
           >
             <button
               onClick={() => setActiveTab("Entrées")}
-              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Entrées"
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
+                activeTab === "Entrées"
                   ? "text-gray-900"
                   : "text-gray-500 hover:text-gray-700"
-                }`}
+              }`}
             >
               🥗 Entrées
               {activeTab === "Entrées" && (
@@ -88,10 +109,11 @@ export default function Products() {
 
             <button
               onClick={() => setActiveTab("Légumes")}
-              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Légumes"
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
+                activeTab === "Légumes"
                   ? "text-gray-900"
                   : "text-gray-500 hover:text-gray-700"
-                }`}
+              }`}
             >
               🥕 Légumes
               {activeTab === "Légumes" && (
@@ -101,10 +123,11 @@ export default function Products() {
 
             <button
               onClick={() => setActiveTab("Viandes")}
-              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Viandes"
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
+                activeTab === "Viandes"
                   ? "text-gray-900"
                   : "text-gray-500 hover:text-gray-700"
-                }`}
+              }`}
             >
               🍖 Viandes
               {activeTab === "Viandes" && (
@@ -114,10 +137,11 @@ export default function Products() {
 
             <button
               onClick={() => setActiveTab("Produits laitiers")}
-              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Produits laitiers"
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
+                activeTab === "Produits laitiers"
                   ? "text-gray-900"
                   : "text-gray-500 hover:text-gray-700"
-                }`}
+              }`}
             >
               🧀 Produits laitiers
               {activeTab === "Produits laitiers" && (
@@ -127,10 +151,11 @@ export default function Products() {
 
             <button
               onClick={() => setActiveTab("Fruits")}
-              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Fruits"
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
+                activeTab === "Fruits"
                   ? "text-gray-900"
                   : "text-gray-500 hover:text-gray-700"
-                }`}
+              }`}
             >
               🍎 Fruits
               {activeTab === "Fruits" && (
@@ -140,10 +165,11 @@ export default function Products() {
 
             <button
               onClick={() => setActiveTab("Féculents")}
-              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Féculents"
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
+                activeTab === "Féculents"
                   ? "text-gray-900"
                   : "text-gray-500 hover:text-gray-700"
-                }`}
+              }`}
             >
               🍝 Féculents
               {activeTab === "Féculents" && (
@@ -153,10 +179,11 @@ export default function Products() {
 
             <button
               onClick={() => setActiveTab("Épicerie")}
-              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${activeTab === "Épicerie"
+              className={`px-4 py-3 font-medium transition-all relative whitespace-nowrap ${
+                activeTab === "Épicerie"
                   ? "text-gray-900"
                   : "text-gray-500 hover:text-gray-700"
-                }`}
+              }`}
             >
               🛒 Épicerie
               {activeTab === "Épicerie" && (
@@ -164,15 +191,18 @@ export default function Products() {
               )}
             </button>
           </div>
-          {/* Flèche droite */}
-          <button
-            onClick={() => scrollTabs("right")}
-            className="p-2 bg-white rounded-full shadow hover:bg-gray-50 flex-shrink-0"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
 
+          {/* Flèche droite - affichée seulement si nécessaire */}
+          {showArrows && (
+            <button
+              onClick={() => scrollTabs("right")}
+              className="p-2 bg-white rounded-full shadow hover:bg-gray-50 flex-shrink-0"
+              aria-label="Défiler vers la droite"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          )}
+        </div>
 
         {/* Options (checkboxes) */}
         <div className="flex gap-6 justify-center mb-6">
