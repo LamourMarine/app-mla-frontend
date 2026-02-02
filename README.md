@@ -1,6 +1,6 @@
 # 🌾 Cantine Verte - Frontend
 
-Web interface for the local products sales platform to school canteens.
+Web interface connecting local producers with school canteens. Browse local products, manage your cart, and place orders directly from producers.
 
 ## Prerequisites
 
@@ -57,6 +57,10 @@ The application is accessible at `http://localhost:5173`
 - **HTTP Client**: Axios
 - **Notifications**: React Hot Toast
 - **Build Tool**: Vite
+
+## Related Projects
+
+- [Backend API](https://github.com/LamourMarine/app-mla-backend) - Symfony REST API
 
 ## Design
 
@@ -161,3 +165,12 @@ Configure on Netlify:
 - CORS is configured on the backend side
 - Cart data is persisted per user in localStorage
 - Redux Toolkit is used for global state management
+
+## Author
+
+**Marine Lamour** - Backend Developer  
+[Portfolio](https://ml-dev.netlify.app)
+
+## License
+
+This project is open source and available under the MIT License.
